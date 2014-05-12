@@ -1,4 +1,4 @@
 akash
 =====
 
-The GUI for ChrisBoesch.com.
+The Angularjs-based GUI for ChrisBoesch.com.
