@@ -1,0 +1,77 @@
+<div class="row">
+
+    <div class="col-sm-4 profile">
+        <img ng-src="{{user.data.gravatar}}?s=200&amp;r=g&amp;d=mm" alt="user avatar" class="img-thumbnail">
+        <h2>
+            <span ng-if="user.data.isCurrentUser">Hello </span>
+            {{user.data.name}}
+        </h2>
+
+        <div ng-if="user.data.isCurrentUser">
+            <p>
+                Share OEP with your friends using this link:
+            </p>
+            <p>
+                <input
+                    class="form-control"
+                    type="url" disabled="disabled"
+                    ng-model="user.data.refUrl"
+                />
+            </p>
+        </div>
+    </div>
+
+    <div class="col-sm-8">
+
+        <oep-treehouse-report-card
+            oep-badges="user.data.services.treeHouse"
+            oep-is-current-user="user.data.isCurrentUser"
+        >
+        </oep-treehouse-report-card>
+
+        <oep-code-school-report-card
+            oep-badges="user.data.services.codeSchool"
+            oep-is-current-user="user.data.isCurrentUser"
+        >
+        </oep-code-school-report-card>
+
+
+        <p class="well" ng-if="!user.data.isCurrentUser &amp;&amp; !user.data.services.treeHouse.id &amp;&amp; !user.data.services.codeSchool.id">
+            {{user.data.name}} is net yet registered at
+            <a href="http://www.teamtreehouse.com/signup_code/singapore">Treehouse</a>
+            or <a href="https://www.codeschool.com/">Code School</a>.
+        </p>
+
+
+        <div ng-if="user.data.isCurrentUser &amp;&amp; !user.data.services.treeHouse.id" class="well clearfix">
+            <h2>Treehouse</h2>
+
+            <p>
+                Learn HTML, CSS, iPhone apps &amp; more at <a href="http://www.teamtreehouse.com/signup_code/singapore">Treehouse</a>.
+                Treehouse offers a 14 days free trial.
+            </p>
+
+            <p>
+                Once you’ve registered on TreeHouse, visit
+                <a href="#/edit">our setting page</a>
+                and enter your Treehouse username.
+            </p>
+        </div>
+
+        <div ng-if="user.data.isCurrentUser &amp;&amp; !user.data.services.codeSchool.id" class="well clearfix">
+            <h2>Code School</h2>
+            <p>
+                <a href="https://www.codeschool.com/">Code School</a>
+                teaches web technologies in the comfort of your browser with
+                video lessons, coding challenges, and screencasts. Registering is free,
+                and the provides free content to try out.
+
+            </p>
+            <p>
+                Once you’ve registered on Code School, visit
+                <a href="#/edit">our setting page</a>
+                and enter your code School username.
+            </p>
+        </div>
+    </div>
+</div>
