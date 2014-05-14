@@ -43,7 +43,7 @@
         currentUserApi = oepCurrentUserApi;
       }));
 
-      it('query the server for the current user', function() {
+      it('should query the server for the current user', function() {
         var info;
 
         $httpBackend.expectGET(/\/api\/v1\/user\?returnUrl=.*/).respond(bob);
@@ -54,10 +54,10 @@
         $httpBackend.flush();
 
         expect(info.name).toBe('bob@example.com');
-        expect(/https?:\/\/.+(:\d+)?\/\?ref=bob/.test(info.info.refUrl)).toBeTruthy();
+        expect(/https?:\/\/.+(:\d+)?\/\?ref=bob/.test(info.refUrl)).toBeTruthy();
       });
 
-      it('query the server for the current user and the logout url', function() {
+      it('should query the server for the current user and the logout url', function() {
         var info;
 
         $httpBackend.expectGET('/api/v1/user?returnUrl=%2Ffoo').respond(bob);
@@ -70,7 +70,7 @@
 
       });
 
-      it('return the log in url for logged off users', function() {
+      it('should return the log in url for logged off users', function() {
         var info;
 
         $httpBackend.expectGET('/api/v1/user?returnUrl=%2Ffoo').respond({
@@ -256,7 +256,6 @@
 
         $httpBackend.flush();
         expect(data.name).toEqual(bobInfo.name);
-        expect(/https?:\/\/.+(:\d+)?\/\?ref=bob/.test(data.refUrl)).toBeTruthy();
       });
 
       it('should query ranks', function() {

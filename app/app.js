@@ -72,7 +72,7 @@
       when('/user/:userId', {
         templateUrl: 'userdetails/userdetails-user.html',
         controller: 'OepUserCtrl',
-        controllerAs: 'user',
+        controllerAs: 'ctrl',
         resolve: {
           user: ['$route', 'oepUsersApi', 'oepCurrentUserApi',
             function($route, usersApi, currentUserApi) {
@@ -113,7 +113,7 @@
       when('/', {
         templateUrl: 'userdetails/userdetails-user.html',
         controller: 'OepUserCtrl',
-        controllerAs: 'user',
+        controllerAs: 'ctrl',
         resolve: {
           user: ['$window', '$location', 'oepCurrentUserApi',
             function($window, $location, userApi) {

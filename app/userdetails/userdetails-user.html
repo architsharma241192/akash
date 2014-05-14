@@ -1,13 +1,13 @@
 <div class="row">
 
     <div class="col-sm-4 profile">
-        <img ng-src="{{user.data.gravatar}}?s=200&amp;r=g&amp;d=mm" alt="user avatar" class="img-thumbnail">
+        <img ng-src="{{ctrl.profile.gravatar}}?s=200&amp;r=g&amp;d=mm" alt="user avatar" class="img-thumbnail">
         <h2>
-            <span ng-if="user.data.isCurrentUser">Hello </span>
-            {{user.data.name}}
+            <span ng-if="ctrl.profile.isCurrentUser">Hello </span>
+            {{ctrl.profile.name}}
         </h2>
 
-        <div ng-if="user.data.isCurrentUser">
+        <div ng-if="ctrl.profile.isCurrentUser">
             <p>
                 Share OEP with your friends using this link:
             </p>
@@ -15,7 +15,7 @@
                 <input
                     class="form-control"
                     type="url" disabled="disabled"
-                    ng-model="user.data.refUrl"
+                    ng-model="ctrl.currentUser.refUrl"
                 />
             </p>
         </div>
@@ -24,26 +24,26 @@
     <div class="col-sm-8">
 
         <oep-treehouse-report-card
-            oep-badges="user.data.services.treeHouse"
-            oep-is-current-user="user.data.isCurrentUser"
+            oep-badges="ctrl.profile.services.treeHouse"
+            oep-is-current-user="ctrl.profile.isCurrentUser"
         >
         </oep-treehouse-report-card>
 
         <oep-code-school-report-card
-            oep-badges="user.data.services.codeSchool"
-            oep-is-current-user="user.data.isCurrentUser"
+            oep-badges="ctrl.profile.services.codeSchool"
+            oep-is-current-user="ctrl.profile.isCurrentUser"
         >
         </oep-code-school-report-card>
 
 
-        <p class="well" ng-if="!user.data.isCurrentUser &amp;&amp; !user.data.services.treeHouse.id &amp;&amp; !user.data.services.codeSchool.id">
-            {{user.data.name}} is net yet registered at
+        <p class="well" ng-if="!ctrl.profile.isCurrentUser &amp;&amp; !ctrl.profile.services.treeHouse.id &amp;&amp; !ctrl.profile.services.codeSchool.id">
+            {{ctrl.profile.name}} is net yet registered at
             <a href="http://www.teamtreehouse.com/signup_code/singapore">Treehouse</a>
             or <a href="https://www.codeschool.com/">Code School</a>.
         </p>
 
 
-        <div ng-if="user.data.isCurrentUser &amp;&amp; !user.data.services.treeHouse.id" class="well clearfix">
+        <div ng-if="ctrl.profile.isCurrentUser &amp;&amp; !ctrl.profile.services.treeHouse.id" class="well clearfix">
             <h2>Treehouse</h2>
 
             <p>
@@ -58,7 +58,7 @@
             </p>
         </div>
 
-        <div ng-if="user.data.isCurrentUser &amp;&amp; !user.data.services.codeSchool.id" class="well clearfix">
+        <div ng-if="ctrl.profile.isCurrentUser &amp;&amp; !ctrl.profile.services.codeSchool.id" class="well clearfix">
             <h2>Code School</h2>
             <p>
                 <a href="https://www.codeschool.com/">Code School</a>

@@ -33,17 +33,24 @@
    * OepUserCtrl - Controller for the user profile page.
    *
    * Requires the current user info which it uses to populate the scope
-   * user property.
+   * `profile` property.
    *
    * It will also check that the badge info are up to date.
    *
    */
-  function OepUserCtrl(user, userApi, reportCardApi) {
-    this.data = user;
+  function OepUserCtrl(user, userApi, reportCardApi, currentUserApi) {
+    var self = this;
+
+    this.profile = user;
+    this.currentUser = null;
 
     if (!user || !user.services) {
       return;
     }
+
+    currentUserApi.auth().then(function(info) {
+      self.currentUser = info;
+    });
 
     reportCardApi.checkStats(user.services).then(function(shouldUpdate){
 
@@ -132,7 +139,7 @@
 
   angular.module('oep.userdetails.controllers', ['oep.user.services', 'eop.card.directives', 'eop.card.services']).
 
-  controller('OepUserCtrl', ['user', 'oepUsersApi', 'eopReportCardApi', OepUserCtrl]).
+  controller('OepUserCtrl', ['user', 'oepUsersApi', 'eopReportCardApi', 'oepCurrentUserApi', OepUserCtrl]).
   controller('OepUserFormListCtrl', ['$location', '$window', 'oepCurrentUserApi', 'user', OepUserFormListCtrl])
 
   ;

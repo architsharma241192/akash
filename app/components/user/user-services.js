@@ -47,8 +47,8 @@
    * oepUsersApi - Client fro OEP user api.
    *
    */
-  factory('oepUsersApi', ['oepApi', 'oepDebounce', '$window',
-    function(oepApi, debounce, window) {
+  factory('oepUsersApi', ['oepApi', 'oepDebounce',
+    function(oepApi, debounce) {
       var updatePromises = {};
 
       return {
@@ -57,7 +57,6 @@
          */
         getById: function(id) {
           return oepApi.one('users', id).get().then(function(info) {
-            info.refUrl = refUrl(info.id, window.location);
             return info;
           });
         },
@@ -146,7 +145,7 @@
 
           api.loading = api._get(returnUrl).then(function(user) {
             if (user && user.info && user.info.id) {
-              user.info.refUrl = refUrl(user.info.id, window.location);
+              user.refUrl = refUrl(user.info.id, window.location);
             }
 
             api.data = user;
