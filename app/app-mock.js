@@ -100,6 +100,27 @@
 
       });
 
+      // Treehouse profile
+      httpBackend.whenGET(fixtures.url.treeHouse).respond(function(m, url) {
+        var match = fixtures.url.treeHouse.exec(url),
+          id = match ? match[1] : null;
+
+        if (!id) {
+          return [404, fixtures.notFound];
+        }
+
+        console.log('Mocking calls to Treehouse...');
+        if (fixtures.profiles.treeHouse[id]) {
+          return [200, fixtures.profiles.treeHouse[id]];
+        } else {
+          console.log(
+            'The only valid Treehouse ids are: ' +
+            _.keys(fixtures.profiles.treeHouse).join(', ')
+          );
+          return [404, fixtures.notFound];
+        }
+      });
+
       // Request to update badges
       httpBackend.whenPOST(fixtures.url.updateBadges).respond(function(m, url) {
         var match = fixtures.url.updateBadges.exec(url),
