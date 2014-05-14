@@ -35,6 +35,14 @@ module.exports = function(grunt) {
           ]
         }]
       },
+      debug: {
+        files: [{
+          dot: true,
+          src: [
+            'debug/',
+          ]
+        }]
+      },
       dist: {
         files: [{
           dot: true,
@@ -84,6 +92,16 @@ module.exports = function(grunt) {
     },
 
     copy: {
+      debug: {
+        files: [{
+          expand: true,
+          cwd: 'app/',
+          dest: 'debug/',
+          src: [
+            '**/*'
+          ]
+        }]
+      },
       build: {
         files: [{
           expand: true,
@@ -239,6 +257,11 @@ module.exports = function(grunt) {
     },
 
     targethtml: {
+      debug: {
+        files: {
+          'debug/index.html': 'debug/index.html'
+        }
+      },
       build: {
         files: {
           'build/index.html': 'build/index.html'
@@ -306,6 +329,13 @@ module.exports = function(grunt) {
     },
 
   });
+
+  grunt.registerTask('debug', [
+    'jshint',
+    'clean:debug',
+    'copy:debug',
+    'targethtml:debug'
+  ]);
 
   grunt.registerTask('build:assets', [
     'jshint',
