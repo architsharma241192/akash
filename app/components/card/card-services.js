@@ -1,10 +1,27 @@
+/**
+ * eop.card.services - Services for report card components.
+ *
+ * defines:
+ *
+ * - oepTreeHouseCourses
+ * - oepTrackTreehouseCourses
+ * - eopReportCardApi
+ *
+ */
 (function() {
   'use strict';
 
   angular.module('eop.card.services', ['oep.services']).
 
+  /**
+   * oepTreeHouseCourses - List course available at Treehouse
+   *
+   * Contains its list of lesson, its url, name and icon url.
+   *
+   * TODO: Work in progress.
+   *
+   */
   factory('oepTreeHouseCourses', [
-
     function() {
       return function() {
         return [{
@@ -32,12 +49,16 @@
     }
   ]).
 
+  /**
+   * oepTrackTreehouseCourses - Build the the list of course a user started
+   * or completed from the badges he/she earned.
+   *
+   * Currently only support "How to Make a Website" course.
+   *
+   */
   factory('oepTrackTreehouseCourses', ['oepTreeHouseCourses',
     function(oepTreeHouseCourses) {
       return function(data) {
-        // Treehouse api doesn't give information about course progress;
-        // we have to track them ourselves.
-        // We will start with the html beginer course.
         var result = {
           completed: {},
           inProgress: {}
@@ -75,6 +96,14 @@
     }
   ]).
 
+  /**
+   * eopReportCardApi - Client for Treehouse, Code House and OEP badge
+   * tracking APIs
+   *
+   * TODO: The interface is the a mess and should be centered on the
+   * OEP badge tracking API instead of Treehouse and Code House.
+   *
+   */
   factory('eopReportCardApi', ['$http', 'oepTrackTreehouseCourses', '$q', 'oepApi',
     function($http, oepTrackTreehouseCourses, $q, oepApi) {
       var api = {
@@ -118,6 +147,10 @@
         },
 
         consolidate: {
+          /**
+           * Convert treehouse data to OEP badges tracking schema.
+           *
+           */
           treeHouse: function(data) {
             /* jshint camelcase: false*/
             return {
@@ -128,6 +161,10 @@
             };
           },
 
+          /**
+           * Convert Code School data to OEP badges tracking schema.
+           *
+           */
           codeSchool: function(data) {
             /* jshint camelcase: false*/
             return {
@@ -145,8 +182,6 @@
         /**
          * Return treehouse user report card data
          *
-         * `max` limit the number of badge details that should be return.
-         * To return all the badges earned by user, set it to zero.
          */
         treeHouse: function(username) {
           var url = 'http://teamtreehouse.com/' + username + '.json';
@@ -159,8 +194,6 @@
         /**
          * Return codeschool user report card data
          *
-         * `max` limit the number of badge details that should be return.
-         * To return all the badges earned by user, set it to zero.
          */
         codeSchool: function(username) {
           var profileUrl = 'https://www.codeschool.com/users/' + username,
@@ -172,8 +205,9 @@
         },
 
         /**
-         * Return a promise resolving to true if the stats are out of
-         * date.
+         * Return a promise resolving to true if the badges tracked
+         * by OEP API are out of date with the user's Treehouse and/or
+         * Code School profiles.
          *
          */
         checkStats: function(stats) {
@@ -225,6 +259,10 @@
 
   ;
 
+  /**
+   * Date -> string.
+   *
+   */
   function formatDate(date) {
     var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
       d = new Date(date);
@@ -232,6 +270,10 @@
     return monthNames[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
   }
 
+  /**
+   * Convert Treehouse badge data to OEP API schemas
+   *
+   */
   function parseTreeHouseBadge(badge) {
     /* jshint camelcase: false*/
     return {
@@ -242,14 +284,10 @@
     };
   }
 
-  function getTreeHouseBadges(data) {
-    var badges;
-
-    badges = _getBadges(data);
-    return badges.map(parseTreeHouseBadge);
-  }
-
-
+  /**
+   * Convert Code Course badge data to OEP API schemas.
+   *
+   */
   function parseSchoolBadges(badge) {
     /* jshint camelcase: false*/
     return {
@@ -259,26 +297,23 @@
     };
   }
 
-  function parseSchoolCourses(course) {
-    return {
-      name: course.title,
-      iconUrl: course.badge,
-      url: course.url
-    };
+  /**
+   * Extract badges out of the Treehouse data.
+   *
+   */
+  function getTreeHouseBadges(data) {
+    var badges;
+
+    badges = _getBadges(data);
+    return badges.map(parseTreeHouseBadge);
   }
 
+  /**
+   * Extract badges out of the Code School data.
+   *
+   */
   function getCodeSchoolBadges(data) {
     return _getBadges(data).map(parseSchoolBadges);
-  }
-
-  function getCodeSchoolCourses(courses) {
-    var result = {};
-
-    courses.map(parseSchoolCourses).forEach(function(course) {
-      result[course.name] = course;
-    });
-
-    return result;
   }
 
   function _getBadges(data) {
@@ -287,6 +322,32 @@
     } else {
       return data.badges;
     }
+  }
+
+  /**
+   * Convert Code School courses data to OEP API schemas
+   *
+   */
+  function parseSchoolCourses(course) {
+    return {
+      name: course.title,
+      iconUrl: course.badge,
+      url: course.url
+    };
+  }
+
+  /**
+   * Extract courses out of code course profile data.
+   *
+   */
+  function getCodeSchoolCourses(courses) {
+    var result = {};
+
+    courses.map(parseSchoolCourses).forEach(function(course) {
+      result[course.name] = course;
+    });
+
+    return result;
   }
 
 })();

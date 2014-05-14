@@ -1,7 +1,7 @@
 /**
- * Dummy module
+ * Dummy module - DO NOT EDIT.
  *
- * The built version of this module will contain the cached html partials.
+ * Grunt replaces it with as a version containing the cached html partials.
  *
  */
 (function() {

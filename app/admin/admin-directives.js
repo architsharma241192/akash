@@ -1,8 +1,16 @@
+/**
+ * oep.admin.directives - Directives for the admin subsection.
+ *
+ */
 (function() {
   'use strict';
 
   angular.module('oep.admin.directives', ['oep.templates']).
 
+  /**
+   * Directive create a menu form a list of admin link and their title
+   *
+   */
   directive('oepAdminMenu', function() {
     return {
       restrict: 'E',

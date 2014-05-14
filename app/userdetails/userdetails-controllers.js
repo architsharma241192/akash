@@ -1,3 +1,11 @@
+/**
+ * oep.userdetails.controllers - Module for userdetails subsection controllers.
+ *
+ * Defines:
+ *
+ * - OepUserCtrl
+ */
+
 (function() {
   'use strict';
 
@@ -5,15 +13,31 @@
     userIdFilterPattern = /[^-\w\d.]/g;
 
 
+  /**
+   * Convert a name to an id.
+   *
+   */
   function defaultId(name) {
     var n = defaultName(name);
     return n.replace(userIdFilterPattern, '');
   }
 
+  /**
+   * Convert a gmail account nickname to a name.
+   */
   function defaultName(name) {
     return googleNickNamePattern.exec(name)[1];
   }
 
+  /**
+   * OepUserCtrl - Controller for the user profile page.
+   *
+   * Requires the current user info which it uses to populate the scope
+   * user property.
+   *
+   * It will also check that the badge info are up to date.
+   *
+   */
   function OepUserCtrl(user, userApi, reportCardApi) {
     this.data = user;
 
@@ -33,7 +57,12 @@
     });
   }
 
-
+  /**
+   * OepUserFormListCtrl - Controller for the user settings form.
+   *
+   * TODO: move the logic to extract the referrer out into a service.
+   *
+   */
   function OepUserFormListCtrl($location, $window, userApi, user) {
     var $ = $window.jQuery,
       search = $window.location.search,
@@ -44,7 +73,7 @@
     this.location = $location;
     this.userApi = userApi;
     this.saving = false;
-    this.userIdPatter = /^[-\w\d.]+$/;
+    this.userIdPattern = /^[-\w\d.]+$/;
     this.isNewUser = !user.info;
     this.user = $.extend({}, user);
     this.ref = match && match.length > 2 ? match[2] : null;
@@ -61,6 +90,11 @@
   }
 
   OepUserFormListCtrl.prototype = {
+
+    /**
+     * reset new user values.
+     *
+     */
     newUserInfo: function() {
       this.user.info = {};
       if (this.ref) {
@@ -68,6 +102,9 @@
       }
     },
 
+    /**
+     * Save/create user info.
+     */
     save: function(userInfo) {
       var self = this;
 
@@ -79,6 +116,10 @@
       });
     },
 
+    /**
+     * Add a parent contact to user info.
+     *
+     */
     addParent: function(parent) {
       if (!this.user.info.parents) {
         this.user.info.parents = [];

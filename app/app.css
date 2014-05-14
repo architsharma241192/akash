@@ -1,3 +1,8 @@
+/**
+ * Style for index.html
+ *
+ */
+
 html, body {
   height: 100%;
 }
@@ -27,8 +32,4 @@ footer .text-muted {
 footer > .container-fluid {
   padding-left: 15px;
   padding-right: 15px;
-}
-
-.profile {
-  text-align: center;
 }

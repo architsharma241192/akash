@@ -1,3 +1,8 @@
+/**
+ * oep.services - root service for oep app.
+ *
+ */
+
 (function() {
   'use strict';
 
@@ -17,9 +22,15 @@
     return resp;
   };
 
-  angular.module('oep.services', ['restangular', 'eop.config']).
+  angular.module('oep.services', ['restangular', 'oep.config']).
 
-  service('oepApi', ['Restangular', 'oepSettings',
+  /**
+   * oepApi - Oep API client.
+   *
+   * Build with Restangular (https://github.com/mgonto/restangular)
+   *
+   */
+  factory('oepApi', ['Restangular', 'oepSettings',
     function(Restangular, oepSettings) {
       return Restangular.withConfig(function(RestangularConfigurer) {
         RestangularConfigurer.setBaseUrl(oepSettings.apiPath);

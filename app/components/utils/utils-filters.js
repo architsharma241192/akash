@@ -1,3 +1,11 @@
+/**
+ * oep.utils.filters - Miscellaneous Filters.
+ *
+ * Defines:
+ *
+ * - oepEmpty.
+ *
+ */
 (function() {
   'use strict';
 

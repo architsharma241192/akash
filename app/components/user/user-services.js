@@ -1,7 +1,25 @@
+/**
+ * oep.user.services - Services for the user components.
+ *
+ * Defines:
+ *
+ * - oepUsersApi
+ * - oepCurrentUserApi
+ *
+ * It also defines and install a http interceptor to to reset info about
+ * the current user when angular http backend receives a 401 error code
+ * the OEP API server.
+ *
+ */
 (function() {
   'use strict';
   var api;
 
+  /**
+   * Returns the origin attribute of location or the equivalent
+   * if location doesn't defines it.
+   *
+   */
   function origin(location) {
     if (location.origin) {
       return location.origin;
@@ -13,17 +31,30 @@
 
   }
 
+  /**
+   * Returns a referral url.
+   *
+   * TODO: defines in that modules how to extract the referrer from a URL.
+   *
+   */
   function refUrl(userId, location) {
     return origin(location) + '/?ref=' + userId;
   }
 
   angular.module('oep.user.services', ['oep.services', 'oep.debounce.services']).
 
+  /**
+   * oepUsersApi - Client fro OEP user api.
+   *
+   */
   factory('oepUsersApi', ['oepApi', 'oepDebounce', '$window',
     function(oepApi, debounce, window) {
       var updatePromises = {};
 
       return {
+        /**
+         * Fetch the info for the user (defined by it his/her id)
+         */
         getById: function(id) {
           return oepApi.one('users', id).get().then(function(info) {
             info.refUrl = refUrl(info.id, window.location);
@@ -31,14 +62,26 @@
           });
         },
 
+        /**
+         * Get top 25 user ranks
+         *
+         */
         getRanks: function(sortBy) {
           var param = {};
+
           if (sortBy) {
             param.sortBy = sortBy;
           }
+
           return oepApi.all('ranks').getList(param);
         },
 
+        /**
+         * Request the users badges info to be updated.
+         *
+         * TODO: rename it to updateBagdes.
+         *
+         */
         updateStats: function(id) {
           if (!updatePromises[id]) {
             updatePromises[id] = debounce(function(id) {
@@ -83,6 +126,13 @@
           });
         },
 
+        /**
+         * Authenticate the user.
+         *
+         * Returns a promise resolving to the login status of the current
+         * user with its info (if he registered).
+         *
+         */
         auth: function(returnUrl) {
 
           if (api.data) {
@@ -108,10 +158,21 @@
           return api.loading;
         },
 
+        /**
+         * Update the current user data.
+         *
+         */
         save: function(data) {
           return oepApi.one('user').customPUT(data);
         },
 
+        /**
+         * Reset the cached user info data.
+         *
+         * Should be used when we know the info are outdated or when
+         * the user is logged off.
+         *
+         */
         reset: function(loginUrl, msg) {
           var currentLoginUrl = api.data && api.data.loginUrl || null;
 
@@ -162,6 +223,10 @@
     }
   ]).
 
+  /**
+   * Configure angular http backend to add oepCurrentHttpInterceptor
+   * as interceptor.
+   */
   config(['$httpProvider',
     function($httpProvider) {
       $httpProvider.interceptors.push('oepCurrentHttpInterceptor');

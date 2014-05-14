@@ -1,6 +1,20 @@
+/**
+ * oep.admin.controllers - Controllers for admin subsection.
+ *
+ * Defines:
+ *
+ * - `OepAdminMetrixCtrl`
+ * - `OepAdminSuggestionsCtrl`
+ *
+ */
 (function() {
   'use strict';
 
+  /**
+   * Check the the current user is an admin and populate scope with
+   * the admin menu items.
+   *
+   */
   function init(scope, $location, currentUserApi, menu) {
     scope.menu = menu;
     scope.loading = true;
@@ -12,15 +26,26 @@
         $location.path('/');
         return false;
       }
-    })['finally'](function(){
+    })['finally'](function() {
       scope.loading = false;
     });
   }
 
+  /**
+   * OepAdminMetrixCtrl - controller for the Metric partial.
+   *
+   */
   function OepAdminMetrixCtrl($location, currentUserApi, menu) {
     init(this, $location, currentUserApi, menu);
   }
 
+  /**
+   * OepAdminSuggestionsCtrl - Controller for the suggestions partials.
+   *
+   * Assuming the current user is an admin, it populate the controller
+   * with the list of suggestions, queried from the OEP API.
+   *
+   */
   function OepAdminSuggestionsCtrl($location, currentUserApi, suggestionApi, $q, menu) {
     var self = this;
 
@@ -37,6 +62,11 @@
     });
   }
 
+  /**
+   * OepAdminSuggestionsCtrl.next - query more suggestions and add them
+   * to the list of suggestions.
+   *
+   */
   OepAdminSuggestionsCtrl.prototype.next = function(cursor) {
     var self = this;
 

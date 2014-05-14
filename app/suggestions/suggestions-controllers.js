@@ -1,12 +1,29 @@
+/**
+ * oep.suggestions.controllers - Module for suggestions subsection controllers.
+ *
+ * Defines `OepSuggestionFormCtrl`
+ *
+ */
+
 (function() {
   'use strict';
 
+  /**
+   * OepSuggestionFormCtrl - Controller for the suggestions subsection.
+   *
+   * Populate the scope currentUser property with current user info.
+   *
+   */
   function OepSuggestionFormCtrl(currentUser, suggestionApi) {
     this.api = suggestionApi;
     this.currentUser = currentUser;
     this.reset();
   }
 
+  /**
+   * Request the OEP API to save the current user suggestion.
+   *
+   */
   OepSuggestionFormCtrl.prototype.save = function(suggestion) {
     var self = this;
 
@@ -21,6 +38,11 @@
     });
   };
 
+  /**
+   * Reset the scope initial values (an empty suggestion except for the
+   * user email if he's logged on).
+   *
+   */
   OepSuggestionFormCtrl.prototype.reset = function() {
     var self = this;
 

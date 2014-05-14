@@ -1,8 +1,16 @@
+/**
+ * Fixtures for tests and mock response of the dev server.
+ *
+ */
 (function() {
   'use strict';
 
   angular.module('oep.fixtures', []).
 
+  /**
+   * OEP_FIXTURES for oep tests and test server mocked responses.
+   *
+   */
   constant('OEP_FIXTURES', {
     url: {
       user: /api\/v1\/user(\?returnUrl=.+)?$/,

@@ -1,3 +1,9 @@
+/**
+ * oep module - root module
+ *
+ * Define the angular app and its partials routes.
+ *
+ */
 (function() {
   'use strict';
 
@@ -64,7 +70,7 @@
         controllerAs: 'ctrl',
       }).
       when('/user/:userId', {
-        templateUrl: 'userdetails/user.html',
+        templateUrl: 'userdetails/userdetails-user.html',
         controller: 'OepUserCtrl',
         controllerAs: 'user',
         resolve: {
@@ -88,7 +94,7 @@
         }
       }).
       when('/edit', {
-        templateUrl: 'userdetails/edit.html',
+        templateUrl: 'userdetails/userdetails-edit.html',
         controller: 'OepUserFormListCtrl',
         controllerAs: 'ctrl',
         resolve: {
@@ -105,7 +111,7 @@
         }
       }).
       when('/', {
-        templateUrl: 'userdetails/user.html',
+        templateUrl: 'userdetails/userdetails-user.html',
         controller: 'OepUserCtrl',
         controllerAs: 'user',
         resolve: {

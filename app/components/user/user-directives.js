@@ -1,8 +1,19 @@
+/**
+ * oep.user.directives - Directives for the user components
+ *
+ * Defines oepUniqId.
+ *
+ */
 (function() {
   'use strict';
 
   angular.module('oep.user.directives', ['oep.user.services', 'oep.debounce.services']).
 
+  /**
+   * oepUniqId - Validator for input associated to a ngModel checking
+   * there's no OEP user an id identical to the ngModel value.
+   *
+   */
   directive('oepUniqId', ['oepDebounce', 'oepUsersApi', '$q',
 
     function(debounce, userApi, $q) {
@@ -38,7 +49,6 @@
       };
     }
   ])
-
 
   ;
 
