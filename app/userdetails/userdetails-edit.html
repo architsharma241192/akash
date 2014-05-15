@@ -1,0 +1,164 @@
+<h1>
+    <span ng-if="!ctrl.isNewUser">Settings</span>
+    <span ng-if="ctrl.isNewUser">Register</span>
+</h1>
+
+<form name="userForm" role="form" class="form-horizontal">
+    <fieldset>
+        <legend>Your details</legend>
+        <ng-form name="userDetailsForm">
+            <div class="form-group" ng-class="{'has-error': userDetailsForm.userId.$invalid}">
+                <label class="col-sm-4 control-label" for="user-id">Your username:</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control"
+                        id="user-id" placeholder="Enter a name that will be used as public id."
+                        ng-if="ctrl.isNewUser"
+                        ng-model="ctrl.user.info.id"
+                        ng-required="true"
+                        ng-pattern="ctrl.userIdPattern"
+                        oep-uniq-id="true"
+                        name="userId"
+                    />
+                    <input type="text" class="form-control"
+                        id="show-user-id"
+                        ng-if="!ctrl.isNewUser"
+                        ng-model="ctrl.user.info.id"
+                        disabled="true"
+                    />
+                    <strong class="help-block id-uniq-error" ng-show="userDetailsForm.userId.$error.oepUniqId">
+                        Someone is already using this username.
+                    </strong>
+                    <strong class="help-block" ng-show="userDetailsForm.userId.$error.pattern">
+                        Should only contain letters, numbers, "-" or "_".
+                    </strong>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{'has-error': userDetailsForm.userName.$invalid}">
+                <label class="col-sm-4 control-label" for="user-name">Your screen name:</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control"
+                        id="user-name" placeholder="Enter a name"
+                        ng-model="ctrl.user.info.name"
+                        required="true"
+                        name="userName"
+                    />
+                </div>
+            </div>
+        </ng-form>
+    </fieldset>
+
+    <fieldset ng-if="!ctrl.isNewUser">
+        <legend>Report card details</legend>
+        <ng-form name="reportCardForm">
+            <div class="form-group" ng-class="{'has-error': reportCardForm.userCodeSchooldId.$invalid}">
+                <label class="col-sm-4 control-label" for="user-code-schoold-id">Your Code School username (or id):</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control"
+                        id="user-code-schoold-id" placeholder="Enter you Code School username"
+                        ng-model="ctrl.user.info.services.codeSchool.id"
+                        eop-valid-code-school-username="true"
+                        name="userCodeSchooldId"
+                    />
+                    <strong class="help-block" ng-show="reportCardForm.userCodeSchooldId.$error.eopValidCodeSchoolUsername">
+                        This username is not valid or
+                        <a ng-href="https://www.codeschool.com/users/{{ctrl.user.info.services.codeSchool.id}}">your profil</a> has not been made public.
+                    </strong>
+                    <span class="help-block">
+                        You can find your username on you
+                        <a href="https://www.codeschool.com/account/edit">
+                            Code School account page.
+                        </a>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{'has-error': reportCardForm.userTreehouseId.$invalid}">
+                <label class="col-sm-4 control-label" for="user-tree-house-id">Your Treehouse username:</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control"
+                        id="user-tree-house-id" placeholder="Enter you Treehouse username"
+                        ng-model="ctrl.user.info.services.treeHouse.id"
+                        eop-valid-treehouse-username="true"
+                        name="userTreehouseId"
+                    />
+                    <strong class="help-block" ng-show="reportCardForm.userTreehouseId.$error.eopValidTreehouseUsername">
+                        This username is not valid.
+                    </strong>
+                    <span class="help-block">
+                        This is the end part of your Treehouse profil URL.
+                        e.g.:<br/>
+                        <var>http://teamtreehouse.com/<strong>chrisboesch</strong></var><br/>
+                        Your Treehouse profil URL is available on
+                        <a href="https://teamtreehouse.com/account">your Treehouse account page</a>.
+                    </span>
+                </div>
+            </div>
+        </ng-form>
+    </fieldset>
+
+    <fieldset ng-if="!ctrl.isNewUser">
+        <legend>Parents contact</legend>
+        <ul class="list-unstyled">
+            <li class="row" ng-repeat="parent in ctrl.user.info.parents">
+                <ng-form name="innerParentForm">
+                    <div class="col-sm-offset-4 col-sm-3" ng-class="{'has-error': innerParentForm.parentName.$invalid}">
+                        <input type="text" class="form-control parent-name"
+                            placeholder="Enter the parent name"
+                            ng-model="parent.name"
+                            required="true"
+                            name="parentName"
+                        />
+                    </div>
+                    <div class="col-sm-5" ng-class="{'has-error': innerParentForm.parentEmail.$invalid}">
+                        <input type="email" class="form-control parent-name"
+                            placeholder="Enter the parent email"
+                            ng-model="parent.email"
+                            required="true"
+                            name="parentEmail"
+                        />
+                    </div>
+                </ng-form>
+            </li>
+
+            <li class="row">
+                <ng-form name="newParentForm">
+                    <div class="col-sm-offset-4 col-sm-3" ng-class="{'has-error': newParentForm.parentName.$invalid}">
+                        <input type="text" class="form-control parent-name"
+                            placeholder="Enter the parent name"
+                            ng-model="ctrl.newParent.name"
+                            name="parentName"
+                        />
+                    </div>
+                    <div class="col-sm-3" ng-class="{'has-error': newParentForm.parentEmail.$invalid}">
+                        <input type="email" class="form-control parent-name"
+                            placeholder="Enter the parent email"
+                            ng-model="ctrl.newParent.email"
+                            name="parentEmail"
+                        />
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="submit" class="btn btn-default form-control"
+                            ng-click="ctrl.addParent(ctrl.newParent)"
+                            ng-disabled="!ctrl.newParent.email || !ctrl.newParent.name"
+                        >
+                            Add
+                        </button>
+                    </div>
+                </ng-form>
+            </li>
+        </ul>
+    </fieldset>
+    <hr/>
+    <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-8">
+            <button
+                type="submit" class="btn btn-default"
+                ng-click="ctrl.save(ctrl.user.info)"
+                ng-disabled="userForm.$invalid || ctrl.saving"
+            >
+                Save Details
+            </button>
+        </div>
+    </div>
+</form>

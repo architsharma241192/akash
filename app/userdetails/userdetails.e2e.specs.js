@@ -1,0 +1,252 @@
+/**
+ * userdetails subsection e2e tests.
+ *
+ * TODO: share urls with app.js
+ * TODO: share e2e ablolute url with other e2e tests.
+ *
+ */
+
+/* jshint camelcase: false*/
+/* global describe, protractor, it, browser, element, by, expect, takeScreenShot */
+
+(function() {
+  'use strict';
+
+  describe('OEP setting page', function() {
+
+    var ptor = protractor.getInstance(),
+
+      httpBackendMock = function() {
+        angular.module('httpBackendMock', ['ngMockE2E', 'oep', 'oep.fixtures'])
+
+          /**
+           * Mock API requests.
+           *
+           */
+          .run(function($httpBackend, OEP_FIXTURES) {
+            var fix = OEP_FIXTURES,
+              users = fix.users, // List of user info,
+              chrisId = null; // Id of Chris, our logged in user
+
+            // Login
+            $httpBackend.whenGET(fix.url.user).respond(function() {
+              if (!chrisId) {
+                return [200, fix.newChris];
+              } else {
+                return [200, fix.chris(users[chrisId])];
+              }
+            });
+
+            // Updating logged user's info
+            $httpBackend.whenPUT(fix.url.user).respond(function(_, __, rawData) {
+              var data = JSON.parse(rawData);
+
+              chrisId = data.id;
+              fix.newChris.name = data.name;
+
+              data.email = fix.newChris.email;
+              data.gravatar = fix.gravatar;
+              if (!data.services) {
+                data.services = {};
+              }
+
+              users[data.id] = data;
+              return [200, null];
+            });
+
+            // Users info
+            $httpBackend.whenGET(fix.url.users).respond(function(m, url) {
+              var match = fix.url.users.exec(url),
+                id = match ? match[1] : null;
+
+              console.log(id);
+              if (!id || !users[id]) {
+                return [404, fix.notFound];
+              } else {
+                return [200, users[id]];
+              }
+            });
+
+            // Code school id validation
+            $httpBackend.whenGET(fix.url.codeSchoolCheck).respond(function(m, url) {
+              var match = fix.url.codeSchoolCheck.exec(url),
+                id = match ? match[1] : null;
+
+              if (!id) {
+                return [404, fix.notFound];
+              }
+
+              if (fix.profiles.codeSchool[id]) {
+                return [200, {
+                  exist: true
+                }];
+              } else {
+                return [404, fix.notFound];
+              }
+            });
+
+            // Code School profile
+            $httpBackend.whenJSONP(fix.url.codeSchool).respond(function(m, url) {
+              var match = fix.url.codeSchool.exec(url),
+                id = match ? match[1] : null;
+
+              if (!id) {
+                return [404, fix.notFound];
+              }
+
+              if (fix.profiles.codeSchool[id]) {
+                return [200, fix.profiles.codeSchool[id]];
+              } else {
+                return [404, fix.notFound];
+              }
+
+            });
+
+            // Treehouse profile
+            $httpBackend.whenGET(fix.url.treeHouse).respond(function(m, url) {
+              var match = fix.url.treeHouse.exec(url),
+                id = match ? match[1] : null;
+
+              if (!id) {
+                return [404, fix.notFound];
+              }
+
+              if (fix.profiles.treeHouse[id]) {
+                return [200, fix.profiles.treeHouse[id]];
+              } else {
+                return [404, fix.notFound];
+              }
+            });
+
+            $httpBackend.whenGET(/.*/).passThrough();
+          });
+      },
+
+      SettingPage = function() {
+        this.url = 'http://0.0.0.0:5557/#/edit';
+        this.idInput = element(by.model('ctrl.user.info.id'));
+        this.idUniqError = element(by.css('.id-uniq-error'));
+        this.nameInput = element(by.model('ctrl.user.info.id'));
+        this.codeSchoolInput = element(by.model('ctrl.user.info.services.codeSchool.id'));
+        this.treeHouseInput = element(by.model('ctrl.user.info.services.treeHouse.id'));
+        this.saveButton = element(by.partialButtonText('Save'));
+
+        this.get = function() {
+          return browser.get(this.url);
+        };
+
+        this.setName = function(name) {
+          this.nameInput.clear();
+          return this.nameInput.sendKeys(name);
+        };
+
+        this.setId = function(id) {
+          this.idInput.clear();
+          return this.idInput.sendKeys(id);
+        };
+
+        this.setCodeSchoolId = function(id) {
+          this.codeSchoolInput.clear();
+          return this.codeSchoolInput.sendKeys(id);
+        };
+
+        this.setTreeHouseId = function(id) {
+          this.treeHouseInput.clear();
+          return this.treeHouseInput.sendKeys(id);
+        };
+
+        this.save = function() {
+          return this.saveButton.click();
+        };
+      },
+
+      ProfilePage = function() {
+        this.url = 'http://0.0.0.0:5557/#/';
+        this.profileTitle = element(by.binding('ctrl.profile.name'));
+        this.editLink = element(by.css('.edit-link'));
+        this.reportCard = {
+          codeSchool: element(by.css('.report-card.codeschool')),
+          treeHouse: element(by.css('.report-card.treehouse'))
+        };
+
+        this.get = function() {
+          return browser.get(this.url);
+        };
+      };
+
+    ptor.addMockModule('httpBackendMock', httpBackendMock);
+
+    it('should use the gmail nickname as default value', function() {
+      var page = new SettingPage();
+
+      page.get();
+      expect(page.idInput.getAttribute('value')).toBe('chris');
+      expect(page.nameInput.getAttribute('value')).toBe('chris');
+      takeScreenShot('register-1');
+    });
+
+    it('should display an error if the id is taken', function() {
+      var page = new SettingPage();
+
+      page.get();
+      page.setId('dinoboff');
+      expect(page.idUniqError.isDisplayed()).toBeTruthy();
+    });
+
+    it('should disable save button if the name is not selected', function() {
+      var page = new SettingPage();
+
+      page.get();
+      page.setName('');
+      expect(page.saveButton.getAttribute('disabled')).toBeTruthy();
+    });
+
+    it('should redirect the newly registered user to his/her profile page', function() {
+      var settingPage = new SettingPage(),
+        profilePage = new ProfilePage();
+
+      settingPage.get();
+      settingPage.save();
+      takeScreenShot('register-2');
+      expect(browser.getLocationAbsUrl()).toBe(profilePage.url);
+      expect(profilePage.profileTitle.getText()).toBe('Hello chris');
+    });
+
+    it('should let a user add his code school id', function() {
+      var settingPage = new SettingPage(),
+        profilePage = new ProfilePage();
+
+      settingPage.get();
+      settingPage.save();
+      profilePage.editLink.click();
+
+      settingPage.setCodeSchoolId('ChrisBoesch');
+      takeScreenShot('register-3');
+      settingPage.save();
+      takeScreenShot('register-4');
+
+
+      expect(browser.getLocationAbsUrl()).toBe(profilePage.url);
+      expect(profilePage.reportCard.codeSchool.isDisplayed()).toBeTruthy();
+    });
+
+    it('should let a user add his treehouse id', function() {
+      var settingPage = new SettingPage(),
+        profilePage = new ProfilePage();
+
+      settingPage.get();
+      settingPage.save();
+      profilePage.editLink.click();
+
+      settingPage.setTreeHouseId('chrisboesch');
+      takeScreenShot('register-5');
+      settingPage.save();
+      takeScreenShot('register-6');
+
+      expect(browser.getLocationAbsUrl()).toBe(profilePage.url);
+      expect(profilePage.reportCard.treeHouse.isDisplayed()).toBeTruthy();
+    });
+
+  });
+
+})();
