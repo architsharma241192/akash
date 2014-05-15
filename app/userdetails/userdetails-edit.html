@@ -25,7 +25,7 @@
                         ng-model="ctrl.user.info.id"
                         disabled="true"
                     />
-                    <strong class="help-block" ng-show="userDetailsForm.userId.$error.oepUniqId">
+                    <strong class="help-block id-uniq-error" ng-show="userDetailsForm.userId.$error.oepUniqId">
                         Someone is already using this username.
                     </strong>
                     <strong class="help-block" ng-show="userDetailsForm.userId.$error.pattern">

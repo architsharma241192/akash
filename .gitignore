@@ -27,3 +27,4 @@ node_modules
 build/
 debug/
 dist/
+e2e/

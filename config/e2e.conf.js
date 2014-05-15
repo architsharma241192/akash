@@ -23,9 +23,9 @@ exports.config = {
     'use strict';
 
     var tss = function(name, res) {
-      var path = './screenshots/' + name +
-        '-' + res.width + 'x' + res.height +
-        '.png';
+      var path = './screenshots/' +
+        res.width + 'x' + res.height +
+        '-' + name + '.png';
 
       return browser.driver.manage().window().setSize(res.width, res.height).then(function() {
         return browser.takeScreenshot();

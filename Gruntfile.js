@@ -56,6 +56,7 @@ module.exports = function(grunt) {
           dot: true,
           src: [
             'e2e/',
+            'screenshots/*'
           ]
         }]
       },
@@ -203,8 +204,9 @@ module.exports = function(grunt) {
       },
       dev: {
         options: {
+          // debug: true,
           args: {
-            specs: ['e2e/js/appSpec.e2e.js']
+            specs: ['e2e/*/*.e2e.specs.js']
           }
         }
       },
@@ -324,7 +326,7 @@ module.exports = function(grunt) {
           'app/**/*',
           '!app/lib/**/*'
         ],
-        tasks: ['protractor:build']
+        tasks: ['e2e:assets', 'protractor:dev']
       }
     },
 
@@ -335,6 +337,13 @@ module.exports = function(grunt) {
     'clean:debug',
     'copy:debug',
     'targethtml:debug'
+  ]);
+
+  grunt.registerTask('e2e:assets', [
+    'jshint',
+    'clean:e2e',
+    'copy:e2e',
+    'targethtml:e2e',
   ]);
 
   grunt.registerTask('build:assets', [
@@ -364,9 +373,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('autotest', ['jshint', 'karma:autoUnit']);
   grunt.registerTask('autotest:e2e', [
-    'build',
-    'copy:e2e',
-    'targethtml:e2e',
+    'e2e:assets',
     'connect:e2e',
     'protractor:dev',
     'watch:e2e'
