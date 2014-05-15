@@ -14,7 +14,7 @@ git remote add upstream git@github.com:SingaporeClouds/akash.git
 
 Then install dependencies:
 ```
-grunt install -g grunt-cli
+npm install -g grunt-cli
 npm install
 ```
 
