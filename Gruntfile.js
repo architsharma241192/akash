@@ -198,13 +198,23 @@ module.exports = function(grunt) {
 
     protractor: {
       options: {
-        configFile: 'config/e2e.conf.js',
-        keepAlive: true,
+        seleniumAddress: '0.0.0.0',
+        seleniumPort: 4444,
+        keepAlive: false,
         noColor: false,
       },
-      dev: {
+      chrome: {
         options: {
           // debug: true,
+          configFile: 'config/e2e.chrome.conf.js',
+          args: {
+            specs: ['e2e/*/*.e2e.specs.js']
+          }
+        }
+      },
+      phantomjs: {
+        options: {
+          configFile: 'config/e2e.phantomjs.conf.js',
           args: {
             specs: ['e2e/*/*.e2e.specs.js']
           }
@@ -223,6 +233,9 @@ module.exports = function(grunt) {
         }
       }
     },
+
+    'selenium_phantom_hub': {},
+    'selenium_stop': {},
 
     shell: {
       options: {
@@ -369,13 +382,21 @@ module.exports = function(grunt) {
     'usemin'
   ]);
 
-  grunt.registerTask('test', ['jshint', 'karma:unit']);
+  grunt.registerTask('test', ['test:unit', 'test:e2e']);
+  grunt.registerTask('test:unit', ['jshint', 'karma:unit']);
+  grunt.registerTask('test:e2e', [
+    'e2e:assets',
+    'connect:e2e',
+    'selenium_phantom_hub',
+    'protractor:phantomjs',
+    'selenium_stop'
+  ]);
 
-  grunt.registerTask('autotest', ['jshint', 'karma:autoUnit']);
+  grunt.registerTask('autotest:unit', ['jshint', 'karma:autoUnit']);
   grunt.registerTask('autotest:e2e', [
     'e2e:assets',
     'connect:e2e',
-    'protractor:dev',
+    'protractor:chrome',
     'watch:e2e'
   ]);
 
