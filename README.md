@@ -21,7 +21,7 @@ npm install
 
 ## Development
 
-To run the development server:
+To run the development server on port 8.8.8.8:
 ```
 grunt dev
 ```
@@ -108,7 +108,7 @@ together and without mocked api responses.
 grunt build
 ```
 
-The number of requests are therefore limited to few script and stylesheets.
+The number of requests are therefore limited to few scripts and stylesheets.
 
 
 ### dist target
