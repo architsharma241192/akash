@@ -15,14 +15,41 @@
       var users = fixtures.users, // List of user info,
         suggestions = [],
         chrisId = null, // Id of Chris, our logged in user.
-        _ = window._;
+        _ = window._,
+        updateBadges = function(id) {
+          if (
+            users[id].services &&
+            users[id].services.codeSchool &&
+            users[id].services.codeSchool.id &&
+            fixtures.profiles.codeSchool[users[id].services.codeSchool.id]
+          ) {
+            users[id].services.codeSchool = reportCardApi.consolidate.codeSchool(
+              fixtures.profiles.codeSchool[users[id].services.codeSchool.id]
+            );
+          }
+
+          if (
+            users[id].services &&
+            users[id].services.treeHouse &&
+            users[id].services.treeHouse.id &&
+            fixtures.profiles.treeHouse[users[id].services.treeHouse.id]
+          ) {
+            users[id].services.treeHouse = reportCardApi.consolidate.treeHouse(
+              fixtures.profiles.treeHouse[users[id].services.treeHouse.id]
+            );
+          }
+        };
 
       // Login
       httpBackend.whenGET(fixtures.url.user).respond(function() {
+        var result;
+
         if (!chrisId) {
           return [200, fixtures.newChris];
         } else {
-          return [200, fixtures.chris(users[chrisId])];
+          result = _.cloneDeep(users[chrisId]);
+          updateBadges(chrisId);
+          return [200, fixtures.chris(result)];
         }
       });
 
@@ -46,12 +73,15 @@
       // Users info
       httpBackend.whenGET(fixtures.url.users).respond(function(m, url) {
         var match = fixtures.url.users.exec(url),
-          id = match ? match[1] : null;
+          id = match ? match[1] : null,
+          result;
 
         if (!id || !users[id]) {
           return [404, fixtures.notFound];
         } else {
-          return [200, users[id]];
+          result = _.cloneDeep(users[id]);
+          updateBadges(id);
+          return [200, result];
         }
       });
 
@@ -126,31 +156,13 @@
         var match = fixtures.url.updateBadges.exec(url),
           id = match ? match[1] : null;
 
+        console.log('api call deprecated');
+
         if (!id || !users[id]) {
           return [404, fixtures.notFound];
         }
 
-        if (
-          users[id].services &&
-          users[id].services.codeSchool &&
-          users[id].services.codeSchool.id &&
-          fixtures.profiles.codeSchool[users[id].services.codeSchool.id]
-        ) {
-          users[id].services.codeSchool = reportCardApi.consolidate.codeSchool(
-            fixtures.profiles.codeSchool[users[id].services.codeSchool.id]
-          );
-        }
-
-        if (
-          users[id].services &&
-          users[id].services.treeHouse &&
-          users[id].services.treeHouse.id &&
-          fixtures.profiles.treeHouse[users[id].services.treeHouse.id]
-        ) {
-          users[id].services.treeHouse = reportCardApi.consolidate.treeHouse(
-            fixtures.profiles.treeHouse[users[id].services.treeHouse.id]
-          );
-        }
+        updateBadges(id);
 
         return [200, users[id].services];
 
