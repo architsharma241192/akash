@@ -208,6 +208,15 @@
             }
           };
           break;
+        case 'treeHousePoints':
+          sort = function(s) {
+            if (s.treeHouse && s.treeHouse.points) {
+              return -s.treeHouse.points;
+            } else {
+              return 0;
+            }
+          };
+          break;
         case 'codeSchool':
           sort = function(s) {
             if (s.codeSchool && s.codeSchool.badges) {
@@ -217,9 +226,18 @@
             }
           };
           break;
+        case 'codeSchoolPoints':
+          sort = function(s) {
+            if (s.codeSchool && s.codeSchool.points) {
+              return -s.codeSchool.points;
+            } else {
+              return 0;
+            }
+          };
+          break;
         default:
           sort = function(s) {
-            return -s.score;
+            return -s.totalBadges;
           };
           break;
         }

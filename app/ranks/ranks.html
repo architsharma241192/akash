@@ -3,7 +3,15 @@
     <thead>
         <th>Rank</th>
         <th>Name</th>
-        <th>Total Badges</th>
+        <th>
+            <a
+                ng-click="ctrl.getRanks('totalBadges')"
+                class="sort" ng-class="{selected: ctrl.sortedBy == 'totalBadges'}"
+            >
+                <span class="glyphicon glyphicon-chevron-down sort-icon"></span>
+                Total Badges
+            </a>
+        </th>
         <th>
             <a
                 ng-click="ctrl.getRanks('treeHouse')"
