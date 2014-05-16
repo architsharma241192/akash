@@ -41,6 +41,8 @@
   function OepUserCtrl(user, userApi, reportCardApi, currentUserApi) {
     var self = this;
 
+    this.userApi = userApi;
+    this.reportCardApi = reportCardApi;
     this.profile = user;
     this.currentUser = null;
 
@@ -52,17 +54,28 @@
       self.currentUser = info;
     });
 
-    reportCardApi.checkStats(user.services).then(function(shouldUpdate){
+    this.checkBadges(user.services);
+  }
 
+  /**
+   * Check the user badges data are out of date and query the server
+   * for new ones if they are.
+   *
+   */
+  OepUserCtrl.prototype.checkBadges = function(services) {
+    var self = this;
+
+    this.reportCardApi.checkStats(services).then(function(shouldUpdate){
       if (!shouldUpdate) {
         return;
       }
 
-      userApi.updateStats(user.id).then(function(stats) {
-        user.services = stats;
+      return self.userApi.getById(self.profile.id).then(function(info) {
+        self.profile.services = info.services;
+        self.checkBadges(info.services);
       });
     });
-  }
+  };
 
   /**
    * OepUserFormListCtrl - Controller for the user settings form.
@@ -139,7 +152,7 @@
 
   angular.module('oep.userdetails.controllers', ['oep.user.services', 'eop.card.directives', 'eop.card.services']).
 
-  controller('OepUserCtrl', ['user', 'oepUsersApi', 'eopReportCardApi', 'oepCurrentUserApi', OepUserCtrl]).
+  controller('OepUserCtrl', ['user', 'oepUsersApi', 'eopReportCardApi', 'oepCurrentUserApi', '$q', OepUserCtrl]).
   controller('OepUserFormListCtrl', ['$location', '$window', 'oepCurrentUserApi', 'user', OepUserFormListCtrl])
 
   ;

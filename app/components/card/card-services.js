@@ -232,8 +232,11 @@
           return this.treeHouse(details.id).then(function(info) {
             return (
               (info.badges && !details.badges) ||
+              (info.courses && !details.courses) ||
               info.points !== details.points ||
-              info.badges.length !== details.badges.length
+              info.badges.length !== details.badges.length ||
+              info.courses.inProgress.length !== details.courses.inProgress.length ||
+              info.courses.completed.length !== details.courses.completed.length
             );
           });
         },
@@ -246,8 +249,11 @@
           return this.codeSchool(details.id).then(function(info) {
             return (
               (info.badges && !details.badges) ||
+              (info.courses && !details.courses) ||
               info.points !== details.points ||
-              info.badges.length !== details.badges.length
+              info.badges.length !== details.badges.length ||
+              info.courses.inProgress.length !== details.courses.inProgress.length ||
+              info.courses.completed.length !== details.courses.completed.length
             );
           });
         }
