@@ -26,12 +26,22 @@ To run the development server on port 8.8.8.8:
 grunt dev
 ```
 
-To run the unit tests automaticaly:
+To run tests:
 ```
-grunt autotest
+grunt test
 ```
 
-To run the e2e tests and update the screenshots:
+To run the unit tests continuously:
+```
+grunt autotest:unit
+```
+
+to run e2e test only and update screenshots (in phantomjs):
+```
+grunt test:e2e
+```
+
+To run the e2e tests continuously in chrome (cannot be run on Nitrous):
 ```
 grunt autotest:e2e
 ```
