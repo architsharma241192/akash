@@ -23,17 +23,45 @@
            * Mock API requests.
            *
            */
-          .run(function($httpBackend, OEP_FIXTURES) {
+          .run(function($httpBackend, OEP_FIXTURES, $window, eopReportCardApi) {
             var fix = OEP_FIXTURES,
               users = fix.users, // List of user info,
-              chrisId = null; // Id of Chris, our logged in user
+              chrisId = null, // Id of Chris, our logged in user
+              _ = $window._,
+              updateBadges = function(id) {
+                if (
+                  users[id].services &&
+                  users[id].services.codeSchool &&
+                  users[id].services.codeSchool.id &&
+                  fix.profiles.codeSchool[users[id].services.codeSchool.id]
+                ) {
+                  users[id].services.codeSchool = eopReportCardApi.consolidate.codeSchool(
+                    fix.profiles.codeSchool[users[id].services.codeSchool.id]
+                  );
+                }
+
+                if (
+                  users[id].services &&
+                  users[id].services.treeHouse &&
+                  users[id].services.treeHouse.id &&
+                  fix.profiles.treeHouse[users[id].services.treeHouse.id]
+                ) {
+                  users[id].services.treeHouse = eopReportCardApi.consolidate.treeHouse(
+                    fix.profiles.treeHouse[users[id].services.treeHouse.id]
+                  );
+                }
+              };
 
             // Login
             $httpBackend.whenGET(fix.url.user).respond(function() {
+              var result;
+
               if (!chrisId) {
                 return [200, fix.newChris];
               } else {
-                return [200, fix.chris(users[chrisId])];
+                result = _.cloneDeep(users[chrisId]);
+                updateBadges(chrisId);
+                return [200, fix.chris(result)];
               }
             });
 
