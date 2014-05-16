@@ -3,15 +3,6 @@
     <thead>
         <th>Rank</th>
         <th>Name</th>
-        <th>
-            <a
-                ng-click="ctrl.getRanks('score')"
-                class="sort" ng-class="{selected: ctrl.sortedBy == 'score'}"
-            >
-                <span class="glyphicon glyphicon-chevron-down sort-icon"></span>
-                score
-            </a>
-        </th>
         <th>Total Badges</th>
         <th>
             <a
@@ -24,11 +15,29 @@
         </th>
         <th>
             <a
+                ng-click="ctrl.getRanks('treeHousePoints')"
+                class="sort" ng-class="{selected: ctrl.sortedBy == 'treeHousePoints'}"
+            >
+                <span class="glyphicon glyphicon-chevron-down sort-icon"></span>
+                Threehouse points
+            </a>
+        </th>
+        <th>
+            <a
                 ng-click="ctrl.getRanks('codeSchool')"
                 class="sort" ng-class="{selected: ctrl.sortedBy == 'codeSchool'}"
             >
                 <span class="glyphicon glyphicon-chevron-down sort-icon"></span>
                 Code School badges
+            </a>
+        </th>
+        <th>
+            <a
+                ng-click="ctrl.getRanks('codeSchoolPoints')"
+                class="sort" ng-class="{selected: ctrl.sortedBy == 'codeSchoolPoints'}"
+            >
+                <span class="glyphicon glyphicon-chevron-down sort-icon"></span>
+                Code School points
             </a>
         </th>
         <th>
@@ -43,10 +52,11 @@
                     {{student.name}}
                 </a>
             </td>
-            <td>{{student.score}}</td>
             <td>{{student.totalBadges}}</td>
             <td>{{student.treeHouse.badges.length || 0}}</td>
+            <td>{{student.treeHouse.points || 0}}</td>
             <td>{{student.codeSchool.badges.length || 0}}</td>
+            <td>{{student.codeSchool.points || 0}}</td>
             <td class="badge-list">
                 <img ng-repeat="badge in student.treeHouse.badges"
                     ng-src="{{badge.iconUrl}}"
