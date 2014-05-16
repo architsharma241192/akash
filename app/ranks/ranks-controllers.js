@@ -25,7 +25,7 @@
     this.sortedBy = null;
 
     currentUserApi.auth().then(this.setUserStats.bind(this));
-    this.getRanks('treeHouse');
+    this.getRanks('totalBadges');
   }
 
   OepRanksShowRanks.prototype = {
