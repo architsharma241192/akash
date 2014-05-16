@@ -14,6 +14,15 @@
         </th>
         <th>
             <a
+                ng-click="ctrl.getRanks('score')"
+                class="sort" ng-class="{selected: ctrl.sortedBy == 'score'}"
+            >
+                <span class="glyphicon glyphicon-chevron-down sort-icon"></span>
+                Total Score
+            </a>
+        </th>
+        <th>
+            <a
                 ng-click="ctrl.getRanks('treeHouse')"
                 class="sort" ng-class="{selected: ctrl.sortedBy == 'treeHouse'}"
             >
