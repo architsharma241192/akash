@@ -58,6 +58,15 @@
             </a>
         </th>
         <th>
+            <a
+                ng-click="ctrl.getRanks('codeCombatPoints')"
+                class="sort" ng-class="{selected: ctrl.sortedBy == 'codeCombatPoints'}"
+            >
+                <span class="glyphicon glyphicon-chevron-down sort-icon"></span>
+                Code Combat points
+            </a>
+        </th>
+        <th>
             Badges
         </th>
     </thead>
@@ -75,6 +84,7 @@
             <td>{{student.treeHouse.points || 0}}</td>
             <td>{{student.codeSchool.badges.length || 0}}</td>
             <td>{{student.codeSchool.points || 0}}</td>
+            <td>{{student.codeCombat.points || 0}}</td>
             <td class="badge-list">
                 <img ng-repeat="badge in student.treeHouse.badges"
                     ng-src="{{badge.iconUrl}}"
