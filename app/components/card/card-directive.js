@@ -126,7 +126,27 @@
     'eopValidCodeSchoolUsername', 'codeSchool'
   )).
 
-  directive('eopValididCodeCombatUsername', ['oepDebounce', 'eopReportCardApi', '$q',
+  /**
+   * eopValidCodeCombatUsername - Validator a text input (associated to a ngModel).
+   *
+   * Check that the the ngModel value correspond to a valid Code Combat username.
+   *
+   * Populate the ngModel `$error` collection with a `eopValidCodeCombatUsername`
+   * property set to `true` when the username doesn't exist.
+   *
+   * It will also populate a ngModel in the form with the code combat user id.
+   * e.g.:
+   *
+   *   <form name="myForm">
+   *     <input name="userId" readonly="true" ng-model="some.scope.attribute.id"/>
+   *     <input name="userName"
+   *       ng-model="some.scope.attribute.name"
+   *       eop-valid-code-combat-username="myForm.userId"
+   *      />
+   *   </form>
+   *
+   */
+  directive('eopValidCodeCombatUsername', ['oepDebounce', 'eopReportCardApi', '$q',
     function(debounce, reportCardApi, $q) {
       var updateUserId = function(scope, idPath, userId) {
         var idModel = scope;
@@ -154,11 +174,11 @@
         link: function(scope, e, attr, ctrl) {
           var idPath, delayedChecker, checker, lastQuery = $q.when(true);
 
-          if (!attr || !attr.eopValididCodeCombatUsername) {
+          if (!attr || !attr.eopValidCodeCombatUsername) {
             return;
           }
 
-          idPath = attr.eopValididCodeCombatUsername.split('.');
+          idPath = attr.eopValidCodeCombatUsername.split('.');
 
           delayedChecker = debounce(function(value) {
             if (!value) {
