@@ -35,11 +35,18 @@
         >
         </oep-code-school-report-card>
 
+        <oep-code-combat-report-card
+            oep-badges="ctrl.profile.services.codeCombat"
+            oep-is-current-user="ctrl.profile.isCurrentUser"
+        >
+        </oep-code-combat-report-card>
 
-        <p class="well" ng-if="!ctrl.profile.isCurrentUser &amp;&amp; !ctrl.profile.services.treeHouse.id &amp;&amp; !ctrl.profile.services.codeSchool.id">
+
+        <p class="well" ng-if="!ctrl.profile.isCurrentUser &amp;&amp; !ctrl.profile.services.treeHouse.id &amp;&amp; !ctrl.profile.services.codeSchool.id &amp;&amp; !ctrl.profile.services.codeCombat.id">
             {{ctrl.profile.name}} is not yet registered at
-            <a href="http://www.teamtreehouse.com/signup_code/singapore">Treehouse</a>
-            or <a href="https://www.codeschool.com/">Code School</a>.
+            <a href="http://www.teamtreehouse.com/signup_code/singapore">Treehouse</a>,
+            <a href="https://www.codeschool.com/">Code School</a> or
+            <a href="http://codecombat.com/">Code Combat</a>.
         </p>
 
 
@@ -76,7 +83,23 @@
             <p>
                 Once you’ve registered on Code School, visit
                 <a href="#/edit" class="edit-link">our setting page</a>
-                and enter your code School username.
+                and enter your Code School username.
+            </p>
+        </div>
+
+        <div
+            id="register-codecombat" class="well clearfix"
+            ng-if="ctrl.profile.isCurrentUser &amp;&amp; !ctrl.profile.services.codeCombat.id"
+        >
+            <h2>Code Combat</h2>
+            <p>
+                <a href="http://codecombat.com/">Code Combat</a>,
+                learn to Code JavaScript by Playing a Game.
+            </p>
+            <p>
+                Once you’ve registered on Code Combat, visit
+                <a href="#/edit" class="edit-link">our setting page</a>
+                and enter your Code Combat username.
             </p>
         </div>
     </div>

@@ -101,6 +101,23 @@
   ).
 
   /**
+   * oepCodeCombatReportCard - Directive displaying a user code combat points
+   *
+   */
+  directive('oepCodeCombatReportCard',
+    function() {
+      return {
+        restrict: 'E',
+        templateUrl: 'components/card/card-codecombat.html',
+        scope: {
+          info: '=oepBadges',
+          isCurrentUser: '=oepIsCurrentUser'
+        }
+      };
+    }
+  ).
+
+  /**
    * eopValidTreehouseUsername - Validator a text input (associated to a ngModel).
    *
    * Check that the the ngModel value correspond to a valid Treehouse username.

@@ -1,0 +1,10 @@
+<div class="well clearfix" ng-if="info">
+    <div class="report-card codecombat">
+        <h1>
+            <span ng-if="isCurrentUser">Your </span>
+            Code Combat Points
+        </h1>
+
+        <p><strong>{{info.points || 0}}</strong> points</p>
+    </div>
+</div>
