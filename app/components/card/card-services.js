@@ -142,6 +142,24 @@
             catch (function() {
               return false;
             });
+          },
+
+          /**
+           * Check the code combat user name exist.
+           *
+           * Returns a promise resolving to the user if if it does
+           */
+          codeCombat: function(username) {
+            if (!username) {
+              return $q.when(false);
+            }
+
+            return oepApi.one('codecombat', username).get().then(function(resp) {
+              return resp.userId;
+            }).
+            catch (function() {
+              return false;
+            });
           }
 
         },

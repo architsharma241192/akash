@@ -124,7 +124,73 @@
    */
   directive('eopValidCodeSchoolUsername', validator(
     'eopValidCodeSchoolUsername', 'codeSchool'
-  ))
+  )).
+
+  directive('eopValididCodeCombatUsername', ['oepDebounce', 'eopReportCardApi', '$q',
+    function(debounce, reportCardApi, $q) {
+      var updateUserId = function(scope, idPath, userId) {
+        var idModel = scope;
+
+        if (idPath.length < 2) {
+          return;
+        }
+
+        for (var i = 0; i < idPath.length; i++) {
+          if (!idModel[idPath[i]]) {
+            return;
+          }
+          idModel = idModel[idPath[i]];
+        }
+
+        if (!idModel.$setViewValue) {
+          return;
+        }
+
+        idModel.$setViewValue(userId);
+      };
+
+      return {
+        require: 'ngModel',
+        link: function(scope, e, attr, ctrl) {
+          var idPath, delayedChecker, checker, lastQuery = $q.when(true);
+
+          if (!attr || !attr.eopValididCodeCombatUsername) {
+            return;
+          }
+
+          idPath = attr.eopValididCodeCombatUsername.split('.');
+
+          delayedChecker = debounce(function(value) {
+            if (!value) {
+              ctrl.$setValidity('eopValidCodeCombatUsername', true);
+              return;
+            }
+
+            lastQuery = lastQuery.then(function() {
+              return reportCardApi.check.codeCombat(value).then(function(userId) {
+                if (userId) {
+                  ctrl.$setValidity('eopValidCodeCombatUsername', true);
+                  updateUserId(scope, idPath, userId);
+                } else {
+                  ctrl.$setValidity('eopValidCodeCombatUsername', false);
+                }
+              });
+            });
+
+          }, 1000);
+
+          checker = function(value) {
+            delayedChecker(value);
+            return value;
+          };
+
+          ctrl.$parsers.push(checker);
+          ctrl.$formatters.push(checker);
+
+        }
+      };
+    }
+  ])
 
   ;
 

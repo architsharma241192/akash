@@ -15,6 +15,7 @@
     url: {
       user: /api\/v1\/user(\?returnUrl=.+)?$/,
       users: /api\/v1\/users\/([^\/]+)$/,
+      codeCombatCheck: /api\/v1\/codecombat\/([^\/]+)$/,
       codeSchoolCheck: /api\/v1\/codeschool\/([^\/]+)$/,
       codeSchool: /https:\/\/www\.codeschool\.com\/users\/([^\/]+).json\?callback/,
       treeHouse: /http:\/\/teamtreehouse\.com\/([^\/]+).json/,
