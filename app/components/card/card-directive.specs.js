@@ -96,7 +96,7 @@
 
     });
 
-    describe('eopValididCodeCombatUsername', function() {
+    describe('eopValidCodeCombatUsername', function() {
 
       beforeEach(function() {
         scope.user = {};
@@ -104,7 +104,7 @@
         elem = compile(
           '<form name="form">'+
           '<input ng-model="user.id" name="userId"/>'+
-          '<input ng-model="user.name" name="userName" eop-validid-code-combat-username="form.userId"/>'+
+          '<input ng-model="user.name" name="userName" eop-valid-code-combat-username="form.userId"/>'+
           '</form>'
         )(scope);
       });
