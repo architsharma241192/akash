@@ -85,6 +85,22 @@
         }
       });
 
+      // Code combat username validation
+      httpBackend.whenGET(fixtures.url.codeCombatCheck).respond(function(m, url) {
+        var match = fixtures.url.codeCombatCheck.exec(url),
+          username = match ? match[1] : null;
+
+        if (!username) {
+          return [404, fixtures.notFound];
+        }
+
+        if (username === 'dinoboff') {
+          return [200, {userId: '12345'}];
+        } else {
+          return [404, fixtures.notFound];
+        }
+      });
+
       // Code school id validation
       httpBackend.whenGET(fixtures.url.codeSchoolCheck).respond(function(m, url) {
         var match = fixtures.url.codeSchoolCheck.exec(url),

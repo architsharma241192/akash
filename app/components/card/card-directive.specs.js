@@ -96,6 +96,73 @@
 
     });
 
+    describe('eopValididCodeCombatUsername', function() {
+
+      beforeEach(function() {
+        scope.user = {};
+
+        elem = compile(
+          '<form name="form">'+
+          '<input ng-model="user.id" name="userId"/>'+
+          '<input ng-model="user.name" name="userName" eop-validid-code-combat-username="form.userId"/>'+
+          '</form>'
+        )(scope);
+      });
+
+      it('should check user exist', function() {
+        httpBackend.expectGET('/api/v1/codecombat/bob').respond('{"userId": "12345"}');
+
+        scope.form.userName.$setViewValue('bob');
+        timeout.flush();
+        httpBackend.flush();
+      });
+
+      it('should set model as valid if the account exist', function() {
+        httpBackend.whenGET('/api/v1/codecombat/bob').respond('{"userId": "12345"}');
+
+        scope.form.userName.$setViewValue('bob');
+        timeout.flush();
+        httpBackend.flush();
+
+        expect(scope.form.userName.$valid).toBe(true);
+        expect(scope.form.userName.$error.eopValidCodeCombatUsername).toBe(false);
+      });
+
+      it('should set id model with account id if it exist', function() {
+        httpBackend.whenGET('/api/v1/codecombat/bob').respond('{"userId": "12345"}');
+
+        scope.form.userName.$setViewValue('bob');
+        timeout.flush();
+        httpBackend.flush();
+
+        expect(scope.user.id).toBe('12345');
+      });
+
+      it('should set model as valid if the account doesn\'t exist', function() {
+        httpBackend.whenGET('/api/v1/codecombat/bob').respond(404, '{}');
+
+        scope.form.userName.$setViewValue('bob');
+        timeout.flush();
+        httpBackend.flush();
+
+        expect(scope.form.userName.$valid).toBe(false);
+        expect(scope.form.userName.$error.eopValidCodeCombatUsername).toBe(true);
+      });
+
+      it('should not reset id model if the account doesn\'t exist', function() {
+        httpBackend.whenGET('/api/v1/codecombat/bob').respond(404, '{}');
+        scope.user.id = '12345';
+        scope.$digest();
+
+        scope.form.userName.$setViewValue('bob');
+        timeout.flush();
+        httpBackend.flush();
+
+        expect(scope.user.id).toBe('12345');
+      });
+
+    });
+
   });
 
 })();
