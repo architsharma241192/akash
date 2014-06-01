@@ -274,7 +274,7 @@
 
       it('should query ranks by badges', function() {
         $httpBackend.expectGET('/api/v1/ranks?sortBy=score').respond([]);
-        usersApi.getRanks('score');
+        usersApi.getRanks({sortBy: 'score'});
         $httpBackend.flush();
       });
 

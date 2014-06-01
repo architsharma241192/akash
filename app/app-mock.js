@@ -8,6 +8,17 @@
 (function() {
   'use strict';
 
+  function parseQuery(q) {
+    var params = {};
+
+    q.split('&').forEach(function(pair) {
+      var parts = pair.split('=');
+      params[parts[0]] = parts[1];
+    });
+
+    return params;
+  }
+
   angular.module('oepMocked', ['oep', 'ngMockE2E', 'oep.fixtures', 'eop.card.services']).
 
   run(['$httpBackend', 'OEP_FIXTURES', '$window', 'eopReportCardApi',
@@ -187,34 +198,15 @@
       // Ranks
       httpBackend.whenGET(fixtures.url.ranks).respond(function(m, url) {
         var match = fixtures.url.ranks.exec(url),
-          sortBy = match ? match[1] : null,
-          services = _.map(users, function(user) {
-            var s = _.cloneDeep(user.services),
-              score = 0,
-              totalBadges = 0;
+          params = match ? parseQuery(match[1]) : {},
+          filteredUsers,
+          services,
+          sort,
+          doFilter = params && params.filterByType && params.filterByValue,
+          filterProperty = {};
 
-            if (s.codeSchool && s.codeSchool.badges) {
-              totalBadges += s.codeSchool.badges.length;
-            }
-
-            if (s.treeHouse) {
-              if (s.treeHouse.badges) {
-                totalBadges += s.treeHouse.badges.length;
-              }
-              if (s.treeHouse.points) {
-                score += s.treeHouse.points;
-              }
-            }
-
-            s.id = user.id;
-            s.name = user.name;
-            s.score = score;
-            s.totalBadges = totalBadges;
-            return s;
-          }),
-          sort;
-
-        switch (sortBy) {
+        console.dir(params);
+        switch (params.sortBy) {
         case 'treeHouse':
           sort = function(s) {
             if (s.treeHouse && s.treeHouse.badges) {
@@ -257,6 +249,38 @@
           };
           break;
         }
+
+        if (doFilter) {
+          filterProperty[params.filterByType] = params.filterByValue;
+          filteredUsers = _.filter(users, filterProperty);
+        } else {
+          filteredUsers = users;
+        }
+
+        services = _.map(filteredUsers, function(user) {
+          var s = _.cloneDeep(user.services),
+            score = 0,
+            totalBadges = 0;
+
+          if (s.codeSchool && s.codeSchool.badges) {
+            totalBadges += s.codeSchool.badges.length;
+          }
+
+          if (s.treeHouse) {
+            if (s.treeHouse.badges) {
+              totalBadges += s.treeHouse.badges.length;
+            }
+            if (s.treeHouse.points) {
+              score += s.treeHouse.points;
+            }
+          }
+
+          s.id = user.id;
+          s.name = user.name;
+          s.score = score;
+          s.totalBadges = totalBadges;
+          return s;
+        });
 
         return [200, _.sortBy(services, sort)];
       });

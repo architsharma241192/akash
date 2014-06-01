@@ -16,16 +16,20 @@
    * (as `userStats`) If the current user is not part of top ranks.
    *
    */
-  function OepRanksShowRanks(userApi, currentUserApi) {
+  function OepRanksShowRanks(userApi, currentUserApi, settings) {
+
     this.currentUser = currentUserApi;
     this.userApi = userApi;
 
+    this.filterOptions = settings.userOptions;
+
+    this.filterBy = {};
     this.ranks = null;
     this.userStats = null;
-    this.sortedBy = null;
+    this.sortBy = 'totalBadges';
 
     currentUserApi.auth().then(this.setUserStats.bind(this));
-    this.getRanks('totalBadges');
+    this.getRanks();
   }
 
   OepRanksShowRanks.prototype = {
@@ -55,23 +59,43 @@
      * Fetch rank and populate the scope `ranks` property with it.
      *
      */
-    getRanks: function(sortBy) {
-      var self = this;
+    getRanks: function() {
+      var self = this,
+        opts = {};
+
+      if (
+        this.filterBy &&
+        this.filterBy.type &&
+        this.filterBy.type.id &&
+        this.filterBy.value &&
+        this.filterBy.value.id
+      ) {
+        opts.filterByType = this.filterBy.type.id;
+        opts.filterByValue = this.filterBy.value.id;
+      }
+
+      if (this.sortBy) {
+        opts.sortBy = this.sortBy;
+      }
 
       this.ranks = null;
-      this.sortedBy = sortBy;
-      return this.userApi.getRanks(sortBy).then(function(ranks) {
+      return this.userApi.getRanks(opts).then(function(ranks) {
         self.ranks = ranks;
         self.setUserStats();
         return ranks;
       });
+    },
+
+    getRanksSortedBy: function(sortBy) {
+      this.sortBy = sortBy;
+      return this.getRanks();
     }
   };
 
 
-  angular.module('oep.ranks.controllers', ['oep.user.services', 'eop.card.directives']).
+  angular.module('oep.ranks.controllers', ['oep.config', 'oep.user.services', 'eop.card.directives']).
 
-  controller('OepRanksShowRanks', ['oepUsersApi', 'oepCurrentUserApi', OepRanksShowRanks])
+  controller('OepRanksShowRanks', ['oepUsersApi', 'oepCurrentUserApi', 'oepSettings', '$window', OepRanksShowRanks])
 
   ;
 

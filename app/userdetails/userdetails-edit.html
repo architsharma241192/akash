@@ -45,6 +45,56 @@
                     />
                 </div>
             </div>
+
+            <div class="form-group" ng-class="{'has-error': userDetailsForm.userGender.$invalid}">
+                <label class=" col-sm-4 control-label">Your gender:</label>
+                <div class="col-sm-8">
+                    <label ng-repeat="genre in ctrl.options.gender.choices"
+                        ng-attr-for="user-gender-{{genre.id}}" class="radio"
+                    >
+                        <input type="radio" ng-attr-id="user-gender-{{genre.id}}"
+                            name="userGender" ng-required="true"
+                            ng-model="ctrl.user.info.gender" ng-value="genre.id"
+                        /> {{genre.name}}
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{'has-error': userDetailsForm.yearOfBirth.$invalid}">
+                <label class="col-sm-4 control-label" for="year-of-birth">
+                    Your year of birth
+                </label>
+                <div class="col-sm-8">
+                    <select type="text" class="form-control"
+                        name="yearOfBirth" id="year-of-birth"
+                        ng-model="ctrl.user.info.yearOfBirth"
+                        ng-options="opt.id as opt.name for opt in ctrl.options.yearOfBirth.choices"
+                        required="true"
+                    >
+                        <option value="">
+                            Select a year...
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group" ng-class="{'has-error': userDetailsForm.school.$invalid}">
+                <label class="col-sm-4 control-label" for="userSchool">
+                    Your school
+                </label>
+                <div class="col-sm-8">
+                    <select type="text" class="form-control"
+                        name="school" id="userSchool"
+                        ng-model="ctrl.user.info.school"
+                        ng-options="opt.id as opt.name for opt in ctrl.options.schools.choices"
+                        required="true"
+                    >
+                        <option value="">
+                            Select a school...
+                        </option>
+                    </select>
+                </div>
+            </div>
         </ng-form>
     </fieldset>
 
