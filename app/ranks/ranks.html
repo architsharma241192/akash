@@ -1,12 +1,41 @@
 <h1>Ranks</h1>
+
+<div class="well rank-filter">
+    <form role="form" class="form-inline filter-selectors">
+
+        <div class="form-group">
+            <label for="filterType">Filter player by: </label>
+            <select id="filterType" class="form-control"
+                ng-model="ctrl.filterBy.type"
+                ng-options="type as type.name for (name, type) in ctrl.filterOptions"
+                ng-change="ctrl.filterBy.value = null"
+            >
+                <option value="">No Filter</option>
+            </select>
+        </div>
+
+        <div class="form-group" ng-if="ctrl.filterBy.type">
+            <label for="filterValue" class="sr-only">Set to: </label>
+            <select id="filterValue" class="form-control"
+                ng-model="ctrl.filterBy.value"
+                ng-options="choice as choice.name for choice in ctrl.filterBy.type.choices"
+                ng-change="ctrl.filterBy.value &amp;&amp; ctrl.getRanks()"
+            >
+                <option value="">No Filter</option>
+            </select>
+        </div>
+
+    </form>
+</div>
+
 <table class="table table-striped ranks">
     <thead>
         <th>Rank</th>
         <th>Name</th>
         <th>
             <a
-                ng-click="ctrl.getRanks('totalBadges')"
-                class="sort" ng-class="{selected: ctrl.sortedBy == 'totalBadges'}"
+                ng-click="ctrl.getRanksSortedBy('totalBadges')"
+                class="sort" ng-class="{selected: ctrl.sortBy == 'totalBadges'}"
             >
                 <span class="glyphicon glyphicon-chevron-down sort-icon"></span>
                 Total Badges
@@ -14,8 +43,8 @@
         </th>
         <th>
             <a
-                ng-click="ctrl.getRanks('score')"
-                class="sort" ng-class="{selected: ctrl.sortedBy == 'score'}"
+                ng-click="ctrl.getRanksSortedBy('score')"
+                class="sort" ng-class="{selected: ctrl.sortBy == 'score'}"
             >
                 <span class="glyphicon glyphicon-chevron-down sort-icon"></span>
                 Total Score
@@ -23,8 +52,8 @@
         </th>
         <th>
             <a
-                ng-click="ctrl.getRanks('treeHouse')"
-                class="sort" ng-class="{selected: ctrl.sortedBy == 'treeHouse'}"
+                ng-click="ctrl.getRanksSortedBy('treeHouse')"
+                class="sort" ng-class="{selected: ctrl.sortBy == 'treeHouse'}"
             >
                 <span class="glyphicon glyphicon-chevron-down sort-icon"></span>
                 Threehouse badges
@@ -32,8 +61,8 @@
         </th>
         <th>
             <a
-                ng-click="ctrl.getRanks('treeHousePoints')"
-                class="sort" ng-class="{selected: ctrl.sortedBy == 'treeHousePoints'}"
+                ng-click="ctrl.getRanksSortedBy('treeHousePoints')"
+                class="sort" ng-class="{selected: ctrl.sortBy == 'treeHousePoints'}"
             >
                 <span class="glyphicon glyphicon-chevron-down sort-icon"></span>
                 Threehouse points
@@ -41,8 +70,8 @@
         </th>
         <th>
             <a
-                ng-click="ctrl.getRanks('codeSchool')"
-                class="sort" ng-class="{selected: ctrl.sortedBy == 'codeSchool'}"
+                ng-click="ctrl.getRanksSortedBy('codeSchool')"
+                class="sort" ng-class="{selected: ctrl.sortBy == 'codeSchool'}"
             >
                 <span class="glyphicon glyphicon-chevron-down sort-icon"></span>
                 Code School badges
@@ -50,8 +79,8 @@
         </th>
         <th>
             <a
-                ng-click="ctrl.getRanks('codeSchoolPoints')"
-                class="sort" ng-class="{selected: ctrl.sortedBy == 'codeSchoolPoints'}"
+                ng-click="ctrl.getRanksSortedBy('codeSchoolPoints')"
+                class="sort" ng-class="{selected: ctrl.sortBy == 'codeSchoolPoints'}"
             >
                 <span class="glyphicon glyphicon-chevron-down sort-icon"></span>
                 Code School points
@@ -59,8 +88,8 @@
         </th>
         <th>
             <a
-                ng-click="ctrl.getRanks('codeCombatPoints')"
-                class="sort" ng-class="{selected: ctrl.sortedBy == 'codeCombatPoints'}"
+                ng-click="ctrl.getRanksSortedBy('codeCombatPoints')"
+                class="sort" ng-class="{selected: ctrl.sortBy == 'codeCombatPoints'}"
             >
                 <span class="glyphicon glyphicon-chevron-down sort-icon"></span>
                 Code Combat points

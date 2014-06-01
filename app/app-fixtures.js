@@ -20,7 +20,7 @@
       codeSchool: /https:\/\/www\.codeschool\.com\/users\/([^\/]+).json\?callback/,
       treeHouse: /http:\/\/teamtreehouse\.com\/([^\/]+).json/,
       updateBadges: /api\/v1\/users\/([^\/]+)\/stats/,
-      ranks: /api\/v1\/ranks\?sortBy=([-\.\w]+)$/,
+      ranks: /api\/v1\/ranks\?(.+)$/,
       suggestions: /api\/v1\/suggestions$/
     },
     newChris: {
@@ -43,6 +43,9 @@
         'id': 'Shannon',
         'name': 'Shannon',
         'email': 'shannon@example.com',
+        'gender': 'female',
+        'yearOfBirth': '1992',
+        'school': '1',
         'gravatar': 'http://www.gravatar.com/avatar/0916eb03d5bb2818c14b36ffa0cc4397',
         'services': {
           'treeHouse': {
@@ -55,6 +58,9 @@
         'id': 'ProfChris',
         'name': 'ProfChris',
         'email': 'profchris@example.com',
+        'gender': 'male',
+        'yearOfBirth': 'before-1980',
+        'school': '2',
         'gravatar': 'http://www.gravatar.com/avatar/4e9e7887b253d6dbe8a453bee39b91e2',
         'services': {
           'treeHouse': {
@@ -66,6 +72,9 @@
       'dinoboff': {
         'id': 'dinoboff',
         'name': 'dino',
+        'gender': 'male',
+        'yearOfBirth': 'before-1980',
+        'school': '0',
         'email': 'dinoboff@example.com',
         'gravatar': 'http://www.gravatar.com/avatar/ae73021feb9da0939675c3cc45c5ec0e',
         'services': {

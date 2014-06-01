@@ -65,14 +65,8 @@
          * Get top 25 user ranks
          *
          */
-        getRanks: function(sortBy) {
-          var param = {};
-
-          if (sortBy) {
-            param.sortBy = sortBy;
-          }
-
-          return oepApi.all('ranks').getList(param);
+        getRanks: function(filterBy) {
+          return oepApi.all('ranks').getList(filterBy);
         },
 
         /**

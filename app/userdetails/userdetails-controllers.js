@@ -65,7 +65,7 @@
   OepUserCtrl.prototype.checkBadges = function(services) {
     var self = this;
 
-    this.reportCardApi.checkStats(services).then(function(shouldUpdate){
+    this.reportCardApi.checkStats(services).then(function(shouldUpdate) {
       if (!shouldUpdate) {
         return;
       }
@@ -83,7 +83,7 @@
    * TODO: move the logic to extract the referrer out into a service.
    *
    */
-  function OepUserFormListCtrl($location, $window, userApi, user) {
+  function OepUserFormListCtrl($location, $window, settings, userApi, user) {
     var $ = $window.jQuery,
       search = $window.location.search,
       refPattern = /\?([^&]+&)*ref=([^&]+)(&.*)?/,
@@ -97,6 +97,7 @@
     this.isNewUser = !user.info;
     this.user = $.extend({}, user);
     this.ref = match && match.length > 2 ? match[2] : null;
+    this.options = settings.userOptions;
 
     if (!this.user.info) {
       this.newUserInfo();
@@ -150,10 +151,10 @@
     }
   };
 
-  angular.module('oep.userdetails.controllers', ['oep.user.services', 'eop.card.directives', 'eop.card.services']).
+  angular.module('oep.userdetails.controllers', ['oep.config', 'oep.user.services', 'eop.card.directives', 'eop.card.services']).
 
   controller('OepUserCtrl', ['user', 'oepUsersApi', 'eopReportCardApi', 'oepCurrentUserApi', '$q', OepUserCtrl]).
-  controller('OepUserFormListCtrl', ['$location', '$window', 'oepCurrentUserApi', 'user', OepUserFormListCtrl])
+  controller('OepUserFormListCtrl', ['$location', '$window', 'oepSettings', 'oepCurrentUserApi', 'user', OepUserFormListCtrl])
 
   ;
 

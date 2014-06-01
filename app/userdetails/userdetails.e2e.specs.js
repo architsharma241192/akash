@@ -155,6 +155,10 @@
         this.idInput = element(by.model('ctrl.user.info.id'));
         this.idUniqError = element(by.css('.id-uniq-error'));
         this.nameInput = element(by.model('ctrl.user.info.id'));
+        this.femaleInput = element(by.css('#user-gender-female'));
+        this.maleInput = element(by.css('#user-gender-male'));
+        this.yearSelect = element(by.model('ctrl.user.info.yearOfBirth'));
+        this.schoolSelect = element(by.model('ctrl.user.info.school'));
         this.codeSchoolInput = element(by.model('ctrl.user.info.services.codeSchool.id'));
         this.treeHouseInput = element(by.model('ctrl.user.info.services.treeHouse.id'));
         this.saveButton = element(by.partialButtonText('Save'));
@@ -171,6 +175,26 @@
         this.setId = function(id) {
           this.idInput.clear();
           return this.idInput.sendKeys(id);
+        };
+
+        this.setGenre = function(genre) {
+          if (genre === 'male') {
+            return this.maleInput.click();
+          } else {
+            return this.femaleInput.click();
+          }
+        };
+
+        this.setYearOfBirth = function(yearIndex) {
+          return this.yearSelect.findElements(by.tagName('option')).then(function(options){
+            return options[yearIndex].click();
+          });
+        };
+
+        this.setSchool = function(schoolIndex) {
+          return this.schoolSelect.findElements(by.tagName('option')).then(function(options){
+            return options[schoolIndex].click();
+          });
         };
 
         this.setCodeSchoolId = function(id) {
@@ -234,8 +258,12 @@
         profilePage = new ProfilePage();
 
       settingPage.get();
-      settingPage.save();
+      settingPage.setGenre('male');
+      settingPage.setYearOfBirth(1);
+      settingPage.setSchool(4);
       takeScreenShot('register-2');
+      settingPage.save();
+      takeScreenShot('register-3');
       expect(browser.getLocationAbsUrl()).toBe(profilePage.url);
       expect(profilePage.profileTitle.getText()).toBe('Hello chris');
     });
@@ -245,13 +273,16 @@
         profilePage = new ProfilePage();
 
       settingPage.get();
+      settingPage.setGenre('male');
+      settingPage.setYearOfBirth(1);
+      settingPage.setSchool(4);
       settingPage.save();
       profilePage.editLink.click();
 
       settingPage.setCodeSchoolId('ChrisBoesch');
-      takeScreenShot('register-3');
-      settingPage.save();
       takeScreenShot('register-4');
+      settingPage.save();
+      takeScreenShot('register-5');
 
 
       expect(browser.getLocationAbsUrl()).toBe(profilePage.url);
@@ -263,13 +294,16 @@
         profilePage = new ProfilePage();
 
       settingPage.get();
+      settingPage.setGenre('male');
+      settingPage.setYearOfBirth(1);
+      settingPage.setSchool(4);
       settingPage.save();
       profilePage.editLink.click();
 
       settingPage.setTreeHouseId('chrisboesch');
-      takeScreenShot('register-5');
-      settingPage.save();
       takeScreenShot('register-6');
+      settingPage.save();
+      takeScreenShot('register-7');
 
       expect(browser.getLocationAbsUrl()).toBe(profilePage.url);
       expect(profilePage.reportCard.treeHouse.isDisplayed()).toBeTruthy();
