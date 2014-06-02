@@ -62,7 +62,7 @@
             id: 'services',
             name: 'services',
             choices: [{
-              id: 'threeHouse',
+              id: 'treeHouse',
               name: 'Treehouse'
             }, {
               id: 'codeSchool',
