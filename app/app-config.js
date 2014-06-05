@@ -54,6 +54,30 @@
               id: '4',
               name: 'K12'
             }, {
+              id: '5',
+              name: 'Dunman High School'
+            }, {
+              id: '6',
+              name: 'Pioneer Junior College'
+            }, {
+              id:'7',
+              name: 'NUS High School'
+            }, {
+              id: '8',
+              name: 'Nanyang Polytechnic'
+            }, {
+              id: '9',
+              name: 'Singapore Polytechnic'
+            }, {
+              id: '10',
+              name: 'Ngee Ann Polytechnic'
+            }, {
+              id: '11',
+              name: 'National University of Singapore'
+            }, {
+              id: '12',
+              name: 'Nanyang Technological University'
+            }, {
               id: '0',
               name: 'Other'
             }]
