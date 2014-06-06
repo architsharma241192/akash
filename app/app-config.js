@@ -60,7 +60,7 @@
               id: '6',
               name: 'Pioneer Junior College'
             }, {
-              id:'7',
+              id: '7',
               name: 'NUS High School'
             }, {
               id: '8',
@@ -101,10 +101,18 @@
             }, {
               id: '20',
               name: 'Yishun Junior College'
-            }, {
+            }].sort(function(a, b) {
+              if (a.name > b.name) {
+                return 1;
+              } else if (a.name < b.name) {
+                return -1;
+              } else {
+                return 0;
+              }
+            }).concat([{
               id: '0',
               name: 'Other'
-            }]
+            }])
           },
           services: {
             id: 'services',
