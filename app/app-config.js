@@ -78,6 +78,30 @@
               id: '12',
               name: 'Nanyang Technological University'
             }, {
+              id: '13',
+              name: 'Hwa Chong Institution'
+            }, {
+              id: '14',
+              name: 'Anderson Junior College'
+            }, {
+              id: '15',
+              name: 'Anglo Chinese School (Independent)'
+            }, {
+              id: '16',
+              name: 'National Junior College'
+            }, {
+              id: '17',
+              name: 'Temasek Junior College'
+            }, {
+              id: '18',
+              name: 'Raffles Institution'
+            }, {
+              id: '19',
+              name: 'Victoria Junior College'
+            }, {
+              id: '20',
+              name: 'Yishun Junior College'
+            }, {
               id: '0',
               name: 'Other'
             }]
