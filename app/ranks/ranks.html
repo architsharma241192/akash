@@ -8,7 +8,7 @@
             <select id="filterType" class="form-control"
                 ng-model="ctrl.filterBy.type"
                 ng-options="type as type.name for (name, type) in ctrl.filterOptions"
-                ng-change="ctrl.filterBy.value = null"
+                ng-change="ctrl.filterTypeChanged()"
             >
                 <option value="">No Filter</option>
             </select>
