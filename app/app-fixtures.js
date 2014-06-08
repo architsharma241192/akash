@@ -21,7 +21,8 @@
       treeHouse: /http:\/\/teamtreehouse\.com\/([^\/]+).json/,
       updateBadges: /api\/v1\/users\/([^\/]+)\/stats/,
       ranks: /api\/v1\/ranks\?(.+)$/,
-      suggestions: /api\/v1\/suggestions$/
+      suggestions: /api\/v1\/suggestions$/,
+      schools: /api\/v1\/schools/
     },
     newChris: {
       'isLoggedIn': true,
@@ -424,7 +425,71 @@
     gravatar: 'http://www.gravatar.com/avatar/9655f78d38f380d17931f8dd9a227b9f',
     notFound: {
       'error': 'The resource could not be found.'
-    }
+    },
+    schoolList: [{
+      'name': 'Ngee Ann Polytechnic',
+      'id': '10'
+    }, {
+      'name': 'Anglo Chinese School (Independent)',
+      'id': '15'
+    }, {
+      'name': 'NUS High School',
+      'id': '7'
+    }, {
+      'name': 'Other',
+      'id': '0'
+    }, {
+      'name': 'Raffles Institution',
+      'id': '18'
+    }, {
+      'name': 'National University of Singapore',
+      'id': '11'
+    }, {
+      'name': 'Singapore Polytechnic',
+      'id': '9'
+    }, {
+      'name': 'Nanyang Technological University',
+      'id': '12'
+    }, {
+      'name': 'Yishun Junior College',
+      'id': '20'
+    }, {
+      'name': 'Victoria Junior College',
+      'id': '19'
+    }, {
+      'name': 'Temasek Polytechnic',
+      'id': '3'
+    }, {
+      'name': 'Hwa Chong Institution',
+      'id': '13'
+    }, {
+      'name': 'Nanyang Polytechnic',
+      'id': '8'
+    }, {
+      'name': 'Pioneer Junior College',
+      'id': '6'
+    }, {
+      'name': 'Dunman High School',
+      'id': '5'
+    }, {
+      'name': 'Singapore Management University',
+      'id': '1'
+    }, {
+      'name': 'K12',
+      'id': '4'
+    }, {
+      'name': 'Temasek Junior College',
+      'id': '17'
+    }, {
+      'name': 'Anderson Junior College',
+      'id': '14'
+    }, {
+      'name': 'National Junior College',
+      'id': '16'
+    }, {
+      'name': 'Republic Polytechnic',
+      'id': '2'
+    }]
   })
 
   ;

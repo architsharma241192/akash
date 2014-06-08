@@ -5,13 +5,14 @@
   'use strict';
 
   describe('oep.user.services', function() {
-    var $httpBackend, scope, $http, bob, bobInfo, timeout;
+    var $httpBackend, scope, rootScope, $http, bob, bobInfo, timeout;
 
     beforeEach(module('oep.user.services'));
 
     beforeEach(inject(function(_$httpBackend_, $rootScope, _$http_, _$timeout_) {
       $httpBackend = _$httpBackend_;
       scope = $rootScope.$new();
+      rootScope = $rootScope;
       $http = _$http_;
       timeout = _$timeout_;
 
@@ -95,7 +96,7 @@
         });
 
         currentUserApi.auth('/foo').
-        catch (function(_info) {
+        catch(function(_info) {
           info = _info;
         });
         $httpBackend.flush();
@@ -207,7 +208,9 @@
       });
 
       it('should keep user.loginUrl after 401 resp', function() {
-        $httpBackend.whenGET(/\/api\/v1\/user/).respond({loginUrl: '/login'});
+        $httpBackend.whenGET(/\/api\/v1\/user/).respond({
+          loginUrl: '/login'
+        });
         currentUserApi.auth();
         $httpBackend.flush();
 
@@ -274,7 +277,9 @@
 
       it('should query ranks by badges', function() {
         $httpBackend.expectGET('/api/v1/ranks?sortBy=score').respond([]);
-        usersApi.getRanks({sortBy: 'score'});
+        usersApi.getRanks({
+          sortBy: 'score'
+        });
         $httpBackend.flush();
       });
 
@@ -284,8 +289,92 @@
         timeout.flush();
         $httpBackend.flush();
       });
-    });
 
+      it('should query the list of schools', function() {
+        var resp;
+
+        $httpBackend.expectGET('/api/v1/schools').respond([{
+          id: '0',
+          name: 'Other'
+        }]);
+
+        usersApi.availableSchools().then(function(_resp_) {
+          resp = _resp_;
+        });
+        scope.$digest();
+        $httpBackend.flush();
+
+        expect(resp.length).toBe(1);
+      });
+
+      it('should query the list only once', function() {
+        var queryCount = 0,
+          resps = [],
+          log = function(resp) {
+            resps.push(resp);
+          };
+
+        $httpBackend.expectGET('/api/v1/schools').respond(function() {
+          queryCount++;
+          return [200, [{
+            id: '0',
+            name: 'Other'
+          }]];
+        });
+
+        usersApi.availableSchools().then(log);
+        usersApi.availableSchools().then(log);
+        $httpBackend.flush();
+
+        usersApi.availableSchools().then(log);
+        rootScope.$digest();
+        expect(queryCount).toBe(1);
+        expect(resps.length).toBe(3);
+        expect(resps[0]).toBe(resps[1]);
+        expect(resps[0]).toBe(resps[2]);
+      });
+
+      it('should sort schools by name', function() {
+        var resp;
+
+        $httpBackend.expectGET('/api/v1/schools').respond([{
+          id: '1',
+          name: 'ZZZ'
+        }, {
+          id: '2',
+          name: 'AAA'
+        }]);
+
+        usersApi.availableSchools().then(function(_resp_){
+          resp = _resp_;
+        });
+
+        $httpBackend.flush();
+        expect(resp[0].name).toBe('AAA');
+      });
+
+      it('should should sort schools but keep "other" as lost option', function() {
+        var resp;
+
+        $httpBackend.expectGET('/api/v1/schools').respond([{
+          id: '1',
+          name: 'ZZZ'
+        }, {
+          id: '2',
+          name: 'AAA'
+        }, {
+          id: '0',
+          name: 'Other'
+        }]);
+
+        usersApi.availableSchools().then(function(_resp_){
+          resp = _resp_;
+        });
+
+        $httpBackend.flush();
+        expect(resp[2].name).toBe('Other');
+      });
+    });
   });
 
 })();

@@ -65,6 +65,9 @@
               }
             });
 
+            // school list
+            $httpBackend.whenGET(fix.url.schools).respond(fix.schoolList);
+
             // Updating logged user's info
             $httpBackend.whenPUT(fix.url.user).respond(function(_, __, rawData) {
               var data = JSON.parse(rawData);

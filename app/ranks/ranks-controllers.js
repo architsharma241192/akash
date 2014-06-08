@@ -16,12 +16,19 @@
    * (as `userStats`) If the current user is not part of top ranks.
    *
    */
-  function OepRanksShowRanks(userApi, currentUserApi, settings) {
+  function OepRanksShowRanks(userApi, currentUserApi, settings, window) {
+    var self = this,
+      $ = window.jQuery;
 
     this.currentUser = currentUserApi;
     this.userApi = userApi;
 
-    this.filterOptions = settings.userOptions;
+    this.filterOptions = $.extend({}, settings.userOptions);
+    this.filterOptions.schools = {
+      id: 'schools',
+      name: 'Schools',
+      choices: []
+    };
 
     this.filterBy = {};
     this.ranks = null;
@@ -29,6 +36,9 @@
     this.sortBy = 'totalBadges';
 
     currentUserApi.auth().then(this.setUserStats.bind(this));
+    userApi.availableSchools().then(function(schools) {
+      self.filterOptions.schools.choices = schools;
+    });
     this.getRanks();
   }
 
