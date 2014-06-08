@@ -169,58 +169,6 @@
         </ng-form>
     </fieldset>
 
-    <fieldset ng-if="!ctrl.isNewUser">
-        <legend>Parents contact</legend>
-        <ul class="list-unstyled">
-            <li class="row" ng-repeat="parent in ctrl.user.info.parents">
-                <ng-form name="innerParentForm">
-                    <div class="col-sm-offset-4 col-sm-3" ng-class="{'has-error': innerParentForm.parentName.$invalid}">
-                        <input type="text" class="form-control parent-name"
-                            placeholder="Enter the parent name"
-                            ng-model="parent.name"
-                            required="true"
-                            name="parentName"
-                        />
-                    </div>
-                    <div class="col-sm-5" ng-class="{'has-error': innerParentForm.parentEmail.$invalid}">
-                        <input type="email" class="form-control parent-name"
-                            placeholder="Enter the parent email"
-                            ng-model="parent.email"
-                            required="true"
-                            name="parentEmail"
-                        />
-                    </div>
-                </ng-form>
-            </li>
-
-            <li class="row">
-                <ng-form name="newParentForm">
-                    <div class="col-sm-offset-4 col-sm-3" ng-class="{'has-error': newParentForm.parentName.$invalid}">
-                        <input type="text" class="form-control parent-name"
-                            placeholder="Enter the parent name"
-                            ng-model="ctrl.newParent.name"
-                            name="parentName"
-                        />
-                    </div>
-                    <div class="col-sm-3" ng-class="{'has-error': newParentForm.parentEmail.$invalid}">
-                        <input type="email" class="form-control parent-name"
-                            placeholder="Enter the parent email"
-                            ng-model="ctrl.newParent.email"
-                            name="parentEmail"
-                        />
-                    </div>
-                    <div class="col-sm-2">
-                        <button type="submit" class="btn btn-default form-control"
-                            ng-click="ctrl.addParent(ctrl.newParent)"
-                            ng-disabled="!ctrl.newParent.email || !ctrl.newParent.name"
-                        >
-                            Add
-                        </button>
-                    </div>
-                </ng-form>
-            </li>
-        </ul>
-    </fieldset>
     <hr/>
     <div class="form-group">
         <div class="col-sm-offset-4 col-sm-8">
