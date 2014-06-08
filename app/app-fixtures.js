@@ -65,6 +65,46 @@
         'services': {
           'treeHouse': {
             'id': 'CoderChristian'
+          },
+          'codeCombat': {
+            'id': '537d66783dcf67c40571fce9',
+            'name': 'ProfBoesch',
+            'courses': {
+              'completed': {},
+              'inProgress': {
+                'Gold Rush (humans)': {
+                  'name': 'Gold Rush (humans)',
+                  'iconUrl': 'http://codecombat.com/file/db/level/52602ecb026e8481e7000001/generic_1.png',
+                  'points': 374
+                },
+                'Gold Rush (ogres)': {
+                  'name': 'Gold Rush (ogres)',
+                  'iconUrl': 'http://codecombat.com/file/db/level/52602ecb026e8481e7000001/generic_1.png',
+                  'points': 1206
+                },
+                'Dungeon Arena (ogres)': {
+                  'name': 'Dungeon Arena (ogres)',
+                  'iconUrl': 'http://codecombat.com/file/db/level/526ae95c1e5cd30000000008/zone_of_danger_icon.png',
+                  'points': 2049
+                },
+                'Greed (humans)': {
+                  'name': 'Greed (humans)',
+                  'iconUrl': 'http://codecombat.com/file/db/level/526fd3043c637ece50001bb2/the_herd_icon.png',
+                  'points': 5104
+                },
+                'Greed (ogres)': {
+                  'name': 'Greed (ogres)',
+                  'iconUrl': 'http://codecombat.com/file/db/level/526fd3043c637ece50001bb2/the_herd_icon.png',
+                  'points': 5279
+                },
+                'Dungeon Arena (humans)': {
+                  'name': 'Dungeon Arena (humans)',
+                  'iconUrl': 'http://codecombat.com/file/db/level/526ae95c1e5cd30000000008/zone_of_danger_icon.png',
+                  'points': 2644
+                }
+              }
+            },
+            'points': 16658
           }
         }
       },
