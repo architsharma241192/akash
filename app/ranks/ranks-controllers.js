@@ -86,10 +86,26 @@
       });
     },
 
+    /**
+     * Update sortBy and update rank.
+     *
+     */
     getRanksSortedBy: function(sortBy) {
       this.sortBy = sortBy;
       return this.getRanks();
+    },
+
+    /**
+     * Reset rank and filter value when the filter type changes.
+     *
+     */
+    filterTypeChanged: function() {
+      if (this.filterBy.value) {
+        this.filterBy.value = null;
+        this.getRanks();
+      }
     }
+
   };
 
 

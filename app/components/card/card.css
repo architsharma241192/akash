@@ -27,3 +27,7 @@
   top: -5px;
   -webkit-box-reflect: below 10px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(70%, transparent), to(rgba(255,255,255,0.2)));
 }
+
+.arena {
+  padding-bottom: 10px;
+}

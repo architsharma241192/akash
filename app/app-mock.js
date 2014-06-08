@@ -105,9 +105,14 @@
           return [404, fixtures.notFound];
         }
 
+        console.log('Mocking calls to code school...');
         if (username === 'dinoboff') {
           return [200, {userId: '12345'}];
         } else {
+          console.log(
+            'The only valid code school ids are: ' +
+            _.keys(['dinoboff']).join(', ')
+          );
           return [404, fixtures.notFound];
         }
       });
