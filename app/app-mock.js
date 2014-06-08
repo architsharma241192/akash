@@ -96,6 +96,9 @@
         }
       });
 
+      // school list
+      httpBackend.whenGET(fixtures.url.schools).respond(fixtures.schoolList);
+
       // Code combat username validation
       httpBackend.whenGET(fixtures.url.codeCombatCheck).respond(function(m, url) {
         var match = fixtures.url.codeCombatCheck.exec(url),
@@ -210,7 +213,6 @@
           doFilter = params && params.filterByType && params.filterByValue,
           filterProperty = {};
 
-        console.dir(params);
         switch (params.sortBy) {
         case 'treeHouse':
           sort = function(s) {

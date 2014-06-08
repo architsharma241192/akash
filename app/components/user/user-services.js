@@ -27,7 +27,7 @@
 
     return location.protocol +
       '//' + location.hostname +
-      (location.port ? ':' + location.port: '');
+      (location.port ? ':' + location.port : '');
 
   }
 
@@ -47,11 +47,14 @@
    * oepUsersApi - Client fro OEP user api.
    *
    */
-  factory('oepUsersApi', ['oepApi', 'oepDebounce',
-    function(oepApi, debounce) {
-      var updatePromises = {};
+  factory('oepUsersApi', ['oepApi', 'oepDebounce', '$q', '$window',
+    function(oepApi, debounce, $q) {
+      var updatePromises = {},
+        schoolsPromise = null,
+        schools = null;
 
       return {
+
         /**
          * Fetch the info for the user (defined by it his/her id)
          */
@@ -83,6 +86,48 @@
           }
 
           return updatePromises[id](id);
+        },
+
+        /**
+         * Fetch list of available schools a user can register to.
+         *
+         * Return a promise resolving to the list of schools.
+         *
+         */
+        availableSchools: function() {
+          if (schools) {
+            return $q.when(schools);
+          }
+
+          if (schoolsPromise) {
+            return $q.when(schoolsPromise);
+          }
+
+          schoolsPromise = oepApi.all('schools').getList().then(function(resp) {
+            schools = resp.sort(function(a, b) {
+              // schools with an id equal to '0' should be last
+              if (a.id === '0' && b.id === '0') {
+                return 0;
+              } else if (a.id === '0') {
+                return 1;
+              } else if (b.id === '0' ) {
+                return -1;
+              }
+
+              // rest, sort by alphabetic order
+              if (a.name > b.name) {
+                return 1;
+              } else if (a.name < b.name) {
+                return -1;
+              } else {
+                return 0;
+              }
+            });
+
+            return schools;
+          });
+
+          return schoolsPromise;
         }
       };
     }

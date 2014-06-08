@@ -83,21 +83,23 @@
    * TODO: move the logic to extract the referrer out into a service.
    *
    */
-  function OepUserFormListCtrl($location, $window, settings, userApi, user) {
-    var $ = $window.jQuery,
+  function OepUserFormListCtrl($location, $window, settings, currentUserApi, usersApi, user) {
+    var self = this,
+      $ = $window.jQuery,
       search = $window.location.search,
       refPattern = /\?([^&]+&)*ref=([^&]+)(&.*)?/,
       match = refPattern.exec(search);
 
     this.$ = $;
     this.location = $location;
-    this.userApi = userApi;
+    this.currentUserApi = currentUserApi;
     this.saving = false;
     this.userIdPattern = /^[-\w\d.]+$/;
     this.isNewUser = !user.info;
     this.user = $.extend({}, user);
     this.ref = match && match.length > 2 ? match[2] : null;
-    this.options = settings.userOptions;
+    this.options = $.extend({}, settings.userOptions);
+    this.options.schools = {choices: []};
 
     if (!this.user.info) {
       this.newUserInfo();
@@ -108,6 +110,10 @@
       this.user.info.id = defaultId(user.name);
       this.user.info.name = defaultName(user.name);
     }
+
+    usersApi.availableSchools().then(function(schools) {
+      self.options.schools.choices = schools;
+    });
   }
 
   OepUserFormListCtrl.prototype = {
@@ -130,31 +136,18 @@
       var self = this;
 
       this.saving = true;
-      this.userApi.save(userInfo).then(function() {
-        self.userApi.reset();
+      this.currentUserApi.save(userInfo).then(function() {
+        self.currentUserApi.reset();
         self.location.path('/');
         self.saving = false;
       });
-    },
-
-    /**
-     * Add a parent contact to user info.
-     *
-     */
-    addParent: function(parent) {
-      if (!this.user.info.parents) {
-        this.user.info.parents = [];
-      }
-
-      this.user.info.parents.push(this.$.extend({}, parent));
-      parent.name = parent.email = null;
     }
   };
 
   angular.module('oep.userdetails.controllers', ['oep.config', 'oep.user.services', 'eop.card.directives', 'eop.card.services']).
 
   controller('OepUserCtrl', ['user', 'oepUsersApi', 'eopReportCardApi', 'oepCurrentUserApi', '$q', OepUserCtrl]).
-  controller('OepUserFormListCtrl', ['$location', '$window', 'oepSettings', 'oepCurrentUserApi', 'user', OepUserFormListCtrl])
+  controller('OepUserFormListCtrl', ['$location', '$window', 'oepSettings', 'oepCurrentUserApi', 'oepUsersApi', 'user', OepUserFormListCtrl])
 
   ;
 
